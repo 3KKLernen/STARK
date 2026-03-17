@@ -848,7 +848,7 @@ let state = {
   step: 0,
   data: {name:"",strasse:"",plz:"",ort:"",telefon:"",email:"",
          beruf:"",betrieb:"",betriebStrasse:"",betriebPlzOrt:"",betriebWeb:"",kontakt:"",
-         bewerbungsart:"Lehrstelle EFZ"},
+         bewerbungsart:"Lehrstelle",ausbildung:"EFZ"},
   answers: {S:"",T:"",A:"",R:"",K:""},
   interviews: {S:{},T:{},A:{},R:{},K:{}},
   companyResearch: null,
@@ -971,8 +971,8 @@ function renderIntro(){
             <input type="url" id="inp-betriebWeb" value="${state.data.betriebWeb}" placeholder="z.B. www.schreinerei-huber.ch">
           </div>
           <div class="form-field">
-            <div class="form-label">Kontaktperson (optional)</div>
-            <input type="text" id="inp-kontakt" value="${state.data.kontakt}" placeholder="z.B. Herr Meier">
+            <div class="form-label">Ansprechperson beim Betrieb <span style="color:var(--faint);font-weight:400;">(optional)</span></div>
+            <input type="text" id="inp-kontakt" value="${state.data.kontakt}" placeholder="z.B. Frau Koppensteiner / Herr Meyer">
           </div>
           <div class="form-field">
             <div class="form-label">Strasse des Betriebs</div>
@@ -993,9 +993,15 @@ function renderIntro(){
             <input type="text" id="inp-beruf" value="${state.data.beruf}" placeholder="z.B. Schreiner">
           </div>
         </div>
-        <div class="form-label" style="margin-top:10px;">Ich bewerbe mich für:</div>
+        <div class="form-label" style="margin-top:10px;">Ausbildungstyp:</div>
         <div class="art-pills">
-          ${['Schnuppertage','Schnupperwoche','Lehrstelle EFZ','Lehrstelle EBA'].map(a=>
+          ${['EFZ','EBA'].map(a=>
+            `<button class="art-pill ${state.data.ausbildung===a?'active':''}" onclick="setAusbildung('${a}')">${a}</button>`
+          ).join('')}
+        </div>
+        <div class="form-label" style="margin-top:12px;">Ich bewerbe mich für:</div>
+        <div class="art-pills">
+          ${['Schnuppertage','Schnupperwoche','Schnupperlehre','Lehrstelle'].map(a=>
             `<button class="art-pill ${state.data.bewerbungsart===a?'active':''}" onclick="setBewerbungsart('${a}')">${a}</button>`
           ).join('')}
         </div>
@@ -1204,23 +1210,25 @@ function renderResult(){
   const {S,T,A,R,K} = state.answers;
   const today = new Date().toLocaleDateString("de-CH",{day:"numeric",month:"long",year:"numeric"});
   
-  // Dynamic subject based on bewerbungsart
+  // Dynamic subject based on bewerbungsart + ausbildung
+  const aus = d.ausbildung || 'EFZ';
   const artMap = {
-    'Schnuppertage': `Bewerbung um Schnuppertage als ${d.beruf}`,
-    'Schnupperwoche': `Bewerbung um eine Schnupperwoche als ${d.beruf}`,
-    'Lehrstelle EFZ': `Bewerbung um eine Lehrstelle als ${d.beruf} EFZ`,
-    'Lehrstelle EBA': `Bewerbung um eine Lehrstelle als ${d.beruf} EBA`
+    'Schnuppertage': `Bewerbung für Schnuppertage als ${d.beruf} ${aus}`,
+    'Schnupperwoche': `Bewerbung für eine Schnupperwoche als ${d.beruf} ${aus}`,
+    'Schnupperlehre': `Bewerbung für eine Schnupperlehre als ${d.beruf} ${aus}`,
+    'Lehrstelle': `Bewerbung für eine Lehrstelle als ${d.beruf} ${aus}`
   };
-  const betreff = artMap[d.bewerbungsart] || `Bewerbung als ${d.beruf}`;
+  const betreff = artMap[d.bewerbungsart] || `Bewerbung als ${d.beruf} ${aus}`;
   
-  // Anrede based on kontakt
-  const anrede = d.kontakt ? 
-    (d.kontakt.match(/^Frau/i) ? `Sehr geehrte ${d.kontakt}` : 
-     d.kontakt.match(/^Herr/i) ? `Sehr geehrter ${d.kontakt}` : 
-     `Guten Tag ${d.kontakt}`) : 
-    'Sehr geehrte Damen und Herren';
+  // Anrede based on Ansprechperson
+  let anrede = 'Sehr geehrte Damen und Herren';
+  if(d.kontakt){
+    if(d.kontakt.match(/^Frau/i)) anrede = `Liebe ${d.kontakt}`;
+    else if(d.kontakt.match(/^Herr/i)) anrede = `Sehr geehrter ${d.kontakt}`;
+    else anrede = `Guten Tag ${d.kontakt}`;
+  }
 
-  const plain = `${d.name}\n${d.strasse}\n${d.plz} ${d.ort}\n${d.telefon?d.telefon+'\n':''}${d.email?d.email+'\n':''}\n${d.betrieb}\n${d.betriebStrasse?d.betriebStrasse+'\n':''}${d.betriebPlzOrt?d.betriebPlzOrt+'\n':''}\n${d.ort}, ${today}\n\n${betreff}\n\n${anrede}\n\n${S}\n\n${T}\n\n${A}\n\n${R}\n\n${K}\n\nFreundliche Grüsse\n\n${d.name}`;
+  const plain = `${d.name}\n${d.strasse}\n${d.plz} ${d.ort}\n${d.email?d.email+'\n':''}${d.telefon?d.telefon+'\n':''}\n${d.betrieb}\n${d.kontakt?d.kontakt+'\n':''}${d.betriebStrasse?d.betriebStrasse+'\n':''}${d.betriebPlzOrt?d.betriebPlzOrt+'\n':''}\n${d.ort}, ${today}\n\n${betreff}\n\n${anrede}\n\n${S}\n\n${T}\n\n${A}\n\n${R}\n\n${K}\n\nMit freundlichen Grüssen\n\n\n${d.name}`;
 
   return `
   <div style="height:20px"></div>
@@ -1235,7 +1243,7 @@ function renderResult(){
     <div class="letter-wrap">
       <div class="letter-sender">
         <strong>${d.name}</strong><br>
-        ${d.strasse?d.strasse+'<br>':''}${d.plz?d.plz+' ':''}${d.ort}${d.telefon?'<br>'+d.telefon:''}${d.email?'<br>'+d.email:''}
+        ${d.strasse?d.strasse+'<br>':''}${d.plz?d.plz+' ':''}${d.ort}${d.email?'<br>'+d.email:''}${d.telefon?'<br>'+d.telefon:''}
       </div>
       <div class="letter-recipient">
         <strong>${d.betrieb}</strong>${d.kontakt?'<br>'+d.kontakt:''}${d.betriebStrasse?'<br>'+d.betriebStrasse:''}${d.betriebPlzOrt?'<br>'+d.betriebPlzOrt:''}
@@ -1250,7 +1258,7 @@ function renderResult(){
         <p>${R} <span class="seg-tag tag-r">R</span></p>
         <p>${K} <span class="seg-tag tag-k">K</span></p>
       </div>
-      <div class="letter-close">Freundliche Grüsse</div>
+      <div class="letter-close">Mit freundlichen Grüssen</div>
       <div class="letter-sig"><div class="sig">${d.name}</div></div>
       <div class="letter-beilagen">Beilagen: Lebenslauf, Zeugnisse</div>
     </div>
@@ -1471,23 +1479,30 @@ function setBewerbungsart(art){
   render();
 }
 
+function setAusbildung(typ){
+  state.data.ausbildung = typ;
+  render();
+}
+
 function copyText(){
   const d=state.data;
   const {S,T,A,R,K}=state.answers;
   const today=new Date().toLocaleDateString("de-CH",{day:"numeric",month:"long",year:"numeric"});
+  const aus = d.ausbildung || 'EFZ';
   const artMap = {
-    'Schnuppertage': `Bewerbung um Schnuppertage als ${d.beruf}`,
-    'Schnupperwoche': `Bewerbung um eine Schnupperwoche als ${d.beruf}`,
-    'Lehrstelle EFZ': `Bewerbung um eine Lehrstelle als ${d.beruf} EFZ`,
-    'Lehrstelle EBA': `Bewerbung um eine Lehrstelle als ${d.beruf} EBA`
+    'Schnuppertage': `Bewerbung für Schnuppertage als ${d.beruf} ${aus}`,
+    'Schnupperwoche': `Bewerbung für eine Schnupperwoche als ${d.beruf} ${aus}`,
+    'Schnupperlehre': `Bewerbung für eine Schnupperlehre als ${d.beruf} ${aus}`,
+    'Lehrstelle': `Bewerbung für eine Lehrstelle als ${d.beruf} ${aus}`
   };
-  const betreff = artMap[d.bewerbungsart] || `Bewerbung als ${d.beruf}`;
-  const anrede = d.kontakt ? 
-    (d.kontakt.match(/^Frau/i) ? `Sehr geehrte ${d.kontakt}` : 
-     d.kontakt.match(/^Herr/i) ? `Sehr geehrter ${d.kontakt}` : 
-     `Guten Tag ${d.kontakt}`) : 
-    'Sehr geehrte Damen und Herren';
-  const plain=`${d.name}\n${d.strasse}\n${d.plz} ${d.ort}\n${d.telefon?d.telefon+'\n':''}${d.email?d.email+'\n':''}\n${d.betrieb}\n${d.betriebStrasse?d.betriebStrasse+'\n':''}${d.betriebPlzOrt?d.betriebPlzOrt+'\n':''}\n${d.ort}, ${today}\n\n${betreff}\n\n${anrede}\n\n${S}\n\n${T}\n\n${A}\n\n${R}\n\n${K}\n\nFreundliche Grüsse\n\n\n${d.name}\n\nBeilagen: Lebenslauf, Zeugnisse`;
+  const betreff = artMap[d.bewerbungsart] || `Bewerbung als ${d.beruf} ${aus}`;
+  let anrede = 'Sehr geehrte Damen und Herren';
+  if(d.kontakt){
+    if(d.kontakt.match(/^Frau/i)) anrede = `Liebe ${d.kontakt}`;
+    else if(d.kontakt.match(/^Herr/i)) anrede = `Sehr geehrter ${d.kontakt}`;
+    else anrede = `Guten Tag ${d.kontakt}`;
+  }
+  const plain=`${d.name}\n${d.strasse}\n${d.plz} ${d.ort}\n${d.email?d.email+'\n':''}${d.telefon?d.telefon+'\n':''}\n${d.betrieb}\n${d.kontakt?d.kontakt+'\n':''}${d.betriebStrasse?d.betriebStrasse+'\n':''}${d.betriebPlzOrt?d.betriebPlzOrt+'\n':''}\n${d.ort}, ${today}\n\n${betreff}\n\n${anrede}\n\n${S}\n\n${T}\n\n${A}\n\n${R}\n\n${K}\n\nMit freundlichen Grüssen\n\n\n${d.name}\n\nBeilagen: Lebenslauf, Zeugnisse`;
   navigator.clipboard.writeText(plain);
   const btn=document.getElementById("btn-copy");
   if(btn){btn.textContent="✓ Kopiert!";setTimeout(()=>{if(btn)btn.textContent="📋 Text kopieren";},2500);}
@@ -1758,7 +1773,7 @@ function buildSystemPrompt(stepKey, beruf, betrieb){
 Aktueller Schritt: ${stepNames[stepKey] || stepKey}
 Lehrberuf: ${beruf || 'unbekannt'}
 Betrieb: ${betrieb || 'unbekannt'}
-Bewerbungsart: ${state.data.bewerbungsart || 'Lehrstelle'}
+Bewerbungsart: ${state.data.bewerbungsart || 'Lehrstelle'} (${state.data.ausbildung || 'EFZ'})
 ${state.companyResearch ? '\nRecherche über den Betrieb:\n' + state.companyResearch.replace(/<br>/g,'\n') : ''}
 Deine Regeln:
 - Antworte IMMER auf Deutsch, kurz und einfach (max. 3 Sätze)
