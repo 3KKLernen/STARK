@@ -377,6 +377,7 @@ input::placeholder{color:var(--faint);}
   body::before{display:none!important;}
   .mode-bar,.app>*:not(.container),.btn-row,.result-actions,.ibox,.compare,
   .sparks-wrap,.qmeter,.coach,.spell-toggle,.tipp-panel,.interview,.gerust,
+  .final-wrap,.coach-input-row,.coach-chat,
   .progress-wrap,.step-hdr,.intro-features,.method-pills,
   .colorbar,.freeze-hint{display:none!important;}
   .container{max-width:100%!important;padding:0!important;}
@@ -389,6 +390,34 @@ input::placeholder{color:var(--faint);}
 }
 
 /* ── AI COACH PANEL ── */
+/* ── COACH CHAT ── */
+.coach-chat{max-height:300px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px;}
+.chat-msg{font-size:13px;line-height:1.6;padding:8px 12px;border-radius:12px;max-width:90%;animation:fadeUp 0.2s;}
+.chat-msg.user{align-self:flex-end;background:rgba(167,139,250,0.15);color:var(--text);border-bottom-right-radius:4px;}
+.chat-msg.ai{align-self:flex-start;background:rgba(255,255,255,0.05);color:rgba(232,237,245,0.8);border-bottom-left-radius:4px;}
+.coach-input-row{display:flex;gap:8px;margin-top:8px;}
+.coach-input{flex:1;background:rgba(255,255,255,0.06);border:1px solid var(--cb);border-radius:12px;
+  padding:10px 14px;color:var(--text);font-size:13px;font-family:'DM Sans',sans-serif;outline:none;resize:none;}
+.coach-input:focus{border-color:var(--pu);}
+.coach-input::placeholder{color:var(--faint);}
+.coach-send{background:linear-gradient(135deg,var(--pu),#8b5cf6);border:none;border-radius:12px;
+  padding:10px 16px;color:#fff;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap;font-family:'DM Sans',sans-serif;}
+.coach-send:hover{opacity:0.9;}
+.coach-send:disabled{opacity:0.3;cursor:not-allowed;}
+/* ── FINAL ANALYSIS ── */
+.final-wrap{margin-top:20px;border-radius:16px;overflow:hidden;background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.15);}
+.final-header{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid rgba(167,139,250,0.1);}
+.final-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--pu);}
+.final-body{padding:14px 16px;font-size:13px;line-height:1.7;color:rgba(232,237,245,0.8);}
+.final-body p{margin-bottom:10px;}
+.final-btn{background:linear-gradient(135deg,var(--pu),#8b5cf6);border:none;border-radius:14px;
+  padding:12px 24px;color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:8px;}
+.final-btn:hover{opacity:0.9;}
+.final-improved{margin-top:14px;background:rgba(255,255,255,0.04);border:1px solid var(--cb);border-radius:14px;padding:16px;font-size:13px;line-height:1.8;white-space:pre-wrap;}
+.final-copy{margin-top:10px;background:rgba(167,139,250,0.12);border:1px solid rgba(167,139,250,0.2);border-radius:10px;
+  padding:8px 16px;color:var(--pu);font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
 .ai-coach-wrap{margin-top:14px;border-radius:16px;overflow:hidden;
   border:1px solid rgba(167,139,250,0.25);background:rgba(10,18,35,0.6);}
 .ai-coach-header{display:flex;align-items:center;gap:10px;padding:10px 14px;
@@ -959,11 +988,16 @@ function renderStep(){
         </div>
       </div>
       <div class="ai-coach-body">
+        <div class="coach-chat" id="coach-chat"></div>
         <div class="ai-feedback" id="ai-feedback-text">${!apiKey ? '<span style="color:var(--muted);font-size:12px;">⚙ Kein API-Key aktiv — im Lehrperson-Tab eingeben.</span>' : answer.length > 20 ? '<span style="color:var(--muted);font-size:12px;">Schreib weiter — Feedback kommt nach einer kurzen Pause.</span>' : '<span style="color:var(--muted);font-size:12px;">Schreib etwas — dann analysiere ich es für dich.</span>'}</div>
         <div class="ai-actions">
           <button class="ai-btn ai-btn-suggest" onclick="requestAISuggestion()">✨ Beispiel zeigen</button>
           <button class="ai-btn ai-btn-fix" onclick="requestAISpell()">✏ Rechtschreibung prüfen</button>
           <button class="ai-btn ai-btn-freeze" onclick="requestAIFreezeHelp()">💬 Ich stecke fest</button>
+        </div>
+        <div class="coach-input-row">
+          <input class="coach-input" id="coach-input" type="text" placeholder="Frag den Coach etwas…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendCoachMsg();}" />
+          <button class="coach-send" id="coach-send-btn" onclick="sendCoachMsg()">Fragen</button>
         </div>
         <div class="ai-suggestion" id="ai-suggestion-wrap" style="display:none;">
           <div class="ai-sug-label">Vorschlag zur Inspiration</div>
@@ -1106,6 +1140,27 @@ function renderResult(){
       <button class="act act-print" onclick="window.print()">🖨 Drucken / PDF</button>
       <button class="act act-copy" id="btn-copy" onclick="copyText()">📋 Text kopieren</button>
       <button class="act act-back2" onclick="goBackToStep()">← Bearbeiten</button>
+    </div>
+
+    <div class="final-wrap" id="final-wrap">
+      <div class="final-header">
+        <div class="ai-coach-av" style="width:24px;height:24px;font-size:14px;">🤖</div>
+        <div class="final-label">KI-Analyse & Überarbeitung</div>
+      </div>
+      <div class="final-body" id="final-body">
+        <div style="text-align:center;padding:10px 0;">
+          <button class="final-btn" onclick="runFinalAnalysis()" id="final-btn">🔍 Brief analysieren & verbessern</button>
+          <div style="font-size:11px;color:var(--muted);margin-top:8px;">Der Coach prüft Aufbau, Sprache, Floskeln und erstellt eine verbesserte Version.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:16px;">
+      <div class="coach-input-row">
+        <input class="coach-input" id="final-chat-input" type="text" placeholder="Frag den Coach etwas zum Brief…" onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendFinalChat();}" />
+        <button class="coach-send" onclick="sendFinalChat()">Fragen</button>
+      </div>
+      <div class="coach-chat" id="final-chat" style="margin-top:10px;"></div>
     </div>
   </div>`;
 }
@@ -1514,7 +1569,7 @@ function showApiStatus(msg, ok){
 }
 
 // ── Core API call with streaming ──
-async function callAI(systemPrompt, userMsg, onChunk, onDone){
+async function callAI(systemPrompt, userMsg, onChunk, onDone, maxTok){
   if(!apiKey){ onDone('(Kein API-Key — im Lehrperson-Modus eingeben)'); return; }
   aiState.thinking = true;
   updateAIStatus(true);
@@ -1530,7 +1585,7 @@ async function callAI(systemPrompt, userMsg, onChunk, onDone){
       },
       body: JSON.stringify({
         model:'claude-sonnet-4-20250514',
-        max_tokens:400,
+        max_tokens: maxTok || 400,
         system: systemPrompt,
         messages:[{role:'user',content:userMsg}]
       })
@@ -1684,6 +1739,163 @@ Stelle eine einzige, sehr einfache und konkrete Frage die ihm/ihr hilft anzufang
 
 // ── Hook into freeze detection ──
 const _origCheckFreeze = checkFreeze;
+
+// ── COACH CHAT (direct questions) ──
+const chatHistory = [];
+
+function sendCoachMsg(){
+  const input = document.getElementById('coach-input');
+  if(!input) return;
+  const msg = input.value.trim();
+  if(!msg || aiState.thinking) return;
+  input.value = '';
+
+  const chatEl = document.getElementById('coach-chat');
+  if(!chatEl) return;
+
+  // Add user message
+  chatHistory.push({role:'user', text:msg});
+  chatEl.innerHTML += `<div class="chat-msg user">${escHtml(msg)}</div>`;
+  
+  // Add AI placeholder
+  const aiId = 'chat-ai-' + Date.now();
+  chatEl.innerHTML += `<div class="chat-msg ai" id="${aiId}"><span class="ai-cursor"></span></div>`;
+  chatEl.scrollTop = chatEl.scrollHeight;
+
+  const s = STEPS[state.step];
+  const text = state.answers[s.key] || '';
+  const sys = buildSystemPrompt(s.key, state.data.beruf, state.data.betrieb) + 
+    `\n\nDer Schüler stellt dir eine direkte Frage. Antworte hilfreich, kurz und ermutigend.
+Aktueller Text des Schülers für diesen Abschnitt: "${text || '(noch nichts geschrieben)'}"`;
+
+  callAI(sys, msg,
+    (partial) => { const el=document.getElementById(aiId); if(el) el.innerHTML = partial + '<span class="ai-cursor"></span>'; chatEl.scrollTop = chatEl.scrollHeight; },
+    (final)   => { const el=document.getElementById(aiId); if(el) el.innerHTML = final; chatHistory.push({role:'ai', text:final}); chatEl.scrollTop = chatEl.scrollHeight; }
+  );
+}
+
+function escHtml(t){ const d=document.createElement('div'); d.textContent=t; return d.innerHTML; }
+
+// ── FINAL ANALYSIS ──
+function runFinalAnalysis(){
+  const btn = document.getElementById('final-btn');
+  const body = document.getElementById('final-body');
+  if(!body || !apiKey) { body.innerHTML='<span style="color:var(--muted);">⚙ Kein API-Key — im Lehrperson-Modus eingeben.</span>'; return; }
+  if(btn) btn.disabled = true;
+  
+  const {name,beruf,betrieb,ort} = state.data;
+  const {S,T,A,R,K} = state.answers;
+  const fullLetter = `Story: ${S}\n\nTalente: ${T}\n\nAntrieb: ${A}\n\nResonanz: ${R}\n\nKlartext: ${K}`;
+
+  body.innerHTML = '<div style="text-align:center;padding:16px;"><span class="ai-cursor"></span> Analysiere den ganzen Brief…</div>';
+
+  const sys = `Du bist ein erfahrener Bewerbungs-Coach für Jugendliche (13-16, Kleinklasse, ADHS/ASS möglich).
+Lehrberuf: ${beruf}, Betrieb: ${betrieb}, Ort: ${ort}, Name: ${name}
+
+Du analysierst jetzt den KOMPLETTEN Motivationsbrief nach dem STARK-Modell.
+
+Deine Aufgabe:
+1. ANALYSE (kurz, max 2 Sätze pro Punkt):
+   - Was ist stark am Brief? (Positives zuerst!)
+   - Wo sind Floskeln oder leere Adjektive?
+   - Fehlen konkrete Beispiele?
+   - Gibt es Konjunktive (würde/könnte/möchte)?
+   - Rechtschreibung/Grammatik
+
+2. VERBESSERTE VERSION:
+   Schreibe den kompletten Brief neu — verbessert aber im Stil des Schülers.
+   Markiere den verbesserten Brief klar mit "---BRIEF---" am Anfang und "---ENDE---" am Ende.
+   Der Brief soll:
+   - Alle Floskeln durch authentische Formulierungen ersetzen
+   - Konjunktive durch direkte Aussagen ersetzen
+   - Konkrete Beispiele einbauen/stärken
+   - Den persönlichen Ton des Schülers beibehalten
+   - Korrekte Rechtschreibung und Grammatik haben
+
+Antworte auf Deutsch, ermutigend, klar strukturiert.`;
+
+  const msg = `Hier ist der komplette Motivationsbrief:\n\n${fullLetter}\n\nAnalysiere ihn und schreibe eine verbesserte Version.`;
+
+  callAI(sys, msg,
+    (partial) => { 
+      body.innerHTML = formatFinalResponse(partial, true); 
+    },
+    (final) => { 
+      body.innerHTML = formatFinalResponse(final, false);
+      if(btn) btn.disabled = false;
+    },
+    1200
+  );
+}
+
+function formatFinalResponse(text, streaming){
+  // Split analysis from improved letter
+  const briefStart = text.indexOf('---BRIEF---');
+  const briefEnd = text.indexOf('---ENDE---');
+  
+  let analysis = text;
+  let improved = '';
+  
+  if(briefStart > -1){
+    analysis = text.substring(0, briefStart).trim();
+    improved = text.substring(briefStart + 11, briefEnd > -1 ? briefEnd : undefined).trim();
+  }
+  
+  let html = `<div style="margin-bottom:14px;">${analysis.replace(/\n/g,'<br>')}</div>`;
+  
+  if(improved){
+    html += `<div class="final-improved">${improved.replace(/\n/g,'<br>')}</div>`;
+    if(!streaming){
+      html += `<button class="final-copy" onclick="copyImproved()">📋 Verbesserte Version kopieren</button>`;
+    }
+  }
+  
+  if(streaming) html += '<span class="ai-cursor"></span>';
+  return html;
+}
+
+let lastImprovedText = '';
+function copyImproved(){
+  const el = document.querySelector('.final-improved');
+  if(!el) return;
+  lastImprovedText = el.innerText;
+  navigator.clipboard.writeText(lastImprovedText).then(()=>{
+    const btn = document.querySelector('.final-copy');
+    if(btn){ btn.textContent = '✓ Kopiert!'; setTimeout(()=>{ btn.textContent = '📋 Verbesserte Version kopieren'; }, 2000); }
+  });
+}
+
+// ── FINAL CHAT (questions about the letter) ──
+function sendFinalChat(){
+  const input = document.getElementById('final-chat-input');
+  if(!input) return;
+  const msg = input.value.trim();
+  if(!msg || aiState.thinking) return;
+  input.value = '';
+
+  const chatEl = document.getElementById('final-chat');
+  if(!chatEl) return;
+
+  chatEl.innerHTML += `<div class="chat-msg user">${escHtml(msg)}</div>`;
+  
+  const aiId = 'fchat-ai-' + Date.now();
+  chatEl.innerHTML += `<div class="chat-msg ai" id="${aiId}"><span class="ai-cursor"></span></div>`;
+  chatEl.scrollTop = chatEl.scrollHeight;
+
+  const {name,beruf,betrieb} = state.data;
+  const {S,T,A,R,K} = state.answers;
+  const fullLetter = `S: ${S}\nT: ${T}\nA: ${A}\nR: ${R}\nK: ${K}`;
+
+  const sys = `Du bist ein einfühlsamer Bewerbungs-Coach für Jugendliche (13-16, Kleinklasse).
+Der Schüler ${name} hat einen Motivationsbrief als ${beruf} bei ${betrieb} geschrieben.
+Hier ist der Brief:\n${fullLetter}\n
+Der Schüler stellt dir jetzt Fragen zum fertigen Brief. Antworte kurz, ermutigend, hilfreich. Max 3 Sätze.`;
+
+  callAI(sys, msg,
+    (partial) => { const el=document.getElementById(aiId); if(el) el.innerHTML = partial + '<span class="ai-cursor"></span>'; chatEl.scrollTop = chatEl.scrollHeight; },
+    (final)   => { const el=document.getElementById(aiId); if(el) el.innerHTML = final; chatEl.scrollTop = chatEl.scrollHeight; }
+  );
+}
 checkFreeze = function(){
   if(Date.now()-lastTyped > 44000 && !freezeShown && state.screen==="step"){
     freezeShown=true;
