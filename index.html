@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>STARK – Motivationsschreiben Coach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --s:#00c9a7;--s2:#009d83;--sl:rgba(0,201,167,0.12);
+  --t:#4f9eff;--t2:#2a7fe0;--tl:rgba(79,158,255,0.12);
+  --a:#f5b942;--a2:#d49a28;--al:rgba(245,185,66,0.12);
+  --r:#ff7c45;--r2:#d95e2a;--rl:rgba(255,124,69,0.12);
+  --k:#ff4f6a;--k2:#d42f4a;--kl:rgba(255,79,106,0.12);
+  --pu:#a78bfa;--pul:rgba(167,139,250,0.12);
+  --bg:#07111f;--bg2:#0b1929;--bg3:#0f2035;
+  --card:rgba(255,255,255,0.035);--cb:rgba(255,255,255,0.07);
+  --text:#e8edf5;--muted:rgba(232,237,245,0.5);--faint:rgba(232,237,245,0.2);
+  --radius:20px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+body::before{content:'';position:fixed;inset:0;
+  background:radial-gradient(ellipse 70% 50% at 15% 10%,rgba(0,201,167,0.07),transparent 60%),
+             radial-gradient(ellipse 50% 40% at 85% 85%,rgba(79,158,255,0.06),transparent 60%);
+  pointer-events:none;z-index:0;}
+
+/* ── MODE SWITCHER ── */
+.mode-bar{position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 20px;background:rgba(7,17,31,0.92);
+  backdrop-filter:blur(16px);border-bottom:1px solid var(--cb);}
+.mode-logo{font-family:'Fraunces',serif;font-size:18px;font-weight:900;
+  background:linear-gradient(90deg,var(--s),var(--t),var(--a),var(--r),var(--k));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.mode-tabs{display:flex;gap:6px;}
+.mode-tab{padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;
+  border:1.5px solid var(--cb);background:transparent;color:var(--muted);
+  cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.mode-tab.active{border-color:var(--s);color:var(--s);background:var(--sl);}
+.mode-tab:hover:not(.active){border-color:rgba(255,255,255,0.2);color:var(--text);}
+
+/* ── LAYOUT ── */
+.app{padding-top:60px;min-height:100vh;position:relative;z-index:1;}
+.container{max-width:760px;margin:0 auto;padding:28px 20px 120px;}
+
+/* ── HERO ── */
+.hero{text-align:center;padding:40px 20px 0;}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;
+  padding:5px 14px;border-radius:100px;
+  background:rgba(0,201,167,0.08);border:1px solid rgba(0,201,167,0.2);
+  font-size:10px;font-weight:700;color:var(--s);letter-spacing:2px;
+  text-transform:uppercase;margin-bottom:20px;}
+.stark-word{font-family:'Fraunces',serif;font-size:clamp(48px,9vw,72px);
+  font-weight:900;letter-spacing:-1px;margin-bottom:12px;line-height:1;}
+.stark-word span{display:inline-block;animation:drop 0.6s cubic-bezier(0.34,1.56,0.64,1) backwards;}
+.stark-word .l0{color:var(--s);text-shadow:0 0 40px rgba(0,201,167,0.5);animation-delay:0.05s;}
+.stark-word .l1{color:var(--t);text-shadow:0 0 40px rgba(79,158,255,0.5);animation-delay:0.12s;}
+.stark-word .l2{color:var(--a);text-shadow:0 0 40px rgba(245,185,66,0.5);animation-delay:0.19s;}
+.stark-word .l3{color:var(--r);text-shadow:0 0 40px rgba(255,124,69,0.5);animation-delay:0.26s;}
+.stark-word .l4{color:var(--k);text-shadow:0 0 40px rgba(255,79,106,0.5);animation-delay:0.33s;}
+@keyframes drop{from{opacity:0;transform:translateY(-24px) scale(0.8);}to{opacity:1;transform:none;}}
+.hero-sub{font-family:'Fraunces',serif;font-style:italic;font-size:18px;
+  color:var(--muted);margin-bottom:8px;}
+.hero-desc{font-size:13px;color:var(--faint);max-width:400px;margin:0 auto;line-height:1.7;}
+
+/* ── CARD ── */
+.card{background:linear-gradient(145deg,rgba(255,255,255,0.045),rgba(255,255,255,0.02));
+  border-radius:var(--radius);padding:32px;
+  border:1px solid var(--cb);
+  box-shadow:0 20px 60px rgba(0,0,0,0.5),inset 0 1px 0 rgba(255,255,255,0.06);
+  animation:cardIn 0.4s cubic-bezier(0.22,1,0.36,1);}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+
+/* ── PROGRESS ── */
+.progress-wrap{margin-bottom:20px;}
+.progress-steps{display:flex;gap:5px;margin-bottom:8px;}
+.pstep{flex:1;height:5px;border-radius:3px;background:var(--cb);transition:all 0.4s;}
+.pstep.done{background:var(--s);}
+.pstep.now{box-shadow:0 0 12px var(--step-color,var(--s));transition:all 0.4s;}
+.progress-labels{display:flex;gap:5px;}
+.plabel{flex:1;font-size:8px;font-weight:700;letter-spacing:0.5px;
+  text-transform:uppercase;text-align:center;
+  color:var(--muted);transition:color 0.3s;}
+.plabel.now{color:var(--step-color,var(--s));}
+
+/* ── STEP HEADER ── */
+.step-hdr{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+.step-badge{width:52px;height:52px;border-radius:14px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;flex-shrink:0;}
+.step-badge .sb-letter{font-family:'Fraunces',serif;font-size:26px;font-weight:900;line-height:1;}
+.step-badge .sb-num{font-size:8px;font-weight:700;opacity:0.5;letter-spacing:1px;}
+.step-info h2{font-family:'Fraunces',serif;font-size:20px;font-weight:700;color:#fff;margin-bottom:3px;}
+.step-info p{font-size:12px;color:var(--muted);}
+
+/* ── INFO BOX ── */
+.ibox{border-radius:14px;padding:16px 18px;margin-bottom:16px;border:1px solid;}
+.ibox-head{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.ibox-head::before{content:'';width:5px;height:5px;border-radius:50%;background:currentColor;display:block;}
+.ibox-body{font-size:13px;line-height:1.7;color:rgba(232,237,245,0.65);}
+.ibox-body strong{color:var(--text);font-weight:600;}
+
+/* ── COMPARE ── */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.cmp{border-radius:12px;padding:12px 14px;border:1px solid;font-size:12px;line-height:1.6;}
+.cmp-label{font-size:8px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  margin-bottom:6px;display:flex;align-items:center;gap:5px;}
+.cmp-label::before{content:'';width:3px;height:3px;border-radius:50%;background:currentColor;display:block;}
+.cmp-bad{background:rgba(255,79,106,0.04);border-color:rgba(255,79,106,0.15);color:rgba(232,237,245,0.5);}
+.cmp-bad .cmp-label{color:var(--k);}
+.cmp-good{background:rgba(0,201,167,0.04);border-color:rgba(0,201,167,0.15);color:rgba(232,237,245,0.8);}
+.cmp-good .cmp-label{color:var(--s);}
+
+/* ── INTERVIEW (neue geführte Fragen) ── */
+.interview{margin-bottom:20px;}
+.interview-title{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+.interview-title::after{content:'';flex:1;height:1px;background:var(--cb);}
+.iq{margin-bottom:14px;}
+.iq-text{font-size:14px;font-weight:600;color:var(--text);margin-bottom:10px;line-height:1.5;}
+.iq-options{display:flex;flex-wrap:wrap;gap:7px;}
+.iq-opt{padding:8px 14px;border-radius:100px;font-size:12.5px;font-weight:500;
+  border:1.5px solid var(--cb);background:transparent;color:var(--muted);
+  cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.iq-opt:hover{border-color:rgba(255,255,255,0.25);color:var(--text);}
+.iq-opt.selected{color:#fff;}
+.iq-mini{font-size:11px;padding:6px 12px;}
+.iq-input{width:100%;padding:11px 14px;border-radius:12px;
+  border:1.5px solid var(--cb);background:rgba(255,255,255,0.025);
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;
+  outline:none;transition:all 0.25s;}
+.iq-input:focus{border-color:var(--step-c,var(--s));box-shadow:0 0 0 3px rgba(0,201,167,0.08);}
+
+/* ── SATZGERÜST ── */
+.gerust{background:rgba(255,255,255,0.02);border-radius:14px;
+  padding:16px 18px;border:1px solid var(--cb);margin-bottom:16px;}
+.gerust-title{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--pu);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.gerust-title::before{content:'⟡';font-size:12px;}
+.gerust-text{font-size:13.5px;line-height:1.9;color:var(--text);}
+.gerust-text .blank{display:inline-block;border-bottom:2px solid;padding:0 4px;
+  min-width:60px;font-style:italic;opacity:0.8;}
+
+/* ── TEXTAREA ── */
+.field-label{font-size:12px;font-weight:600;color:rgba(232,237,245,0.75);
+  margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;}
+textarea{width:100%;padding:14px 16px;border-radius:14px;
+  border:1.5px solid var(--cb);background:rgba(255,255,255,0.025);
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:14.5px;
+  transition:all 0.25s;outline:none;resize:vertical;line-height:1.65;min-height:110px;}
+textarea:focus{border-color:var(--step-c,var(--s));box-shadow:0 0 0 4px rgba(0,201,167,0.07);}
+textarea::placeholder{color:var(--faint);}
+
+/* ── QUALITÄTS-METER ── */
+.qmeter{margin-top:12px;}
+.qm-bar-wrap{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.qm-track{flex:1;height:5px;border-radius:3px;background:var(--cb);overflow:hidden;}
+.qm-fill{height:100%;border-radius:3px;transition:width 0.5s cubic-bezier(0.34,1.56,0.64,1),background 0.4s;}
+.qm-pct{font-size:11px;font-weight:700;min-width:32px;text-align:right;}
+.qm-chips{display:flex;flex-wrap:wrap;gap:5px;}
+.qm-chip{padding:3px 10px;border-radius:100px;font-size:10px;font-weight:700;
+  border:1px solid;transition:all 0.3s;}
+.qm-chip.hit{opacity:1;}
+.qm-chip.miss{opacity:0.25;}
+
+/* ── KI-COACH ── */
+.coach{margin-top:14px;border-radius:14px;padding:14px 16px;
+  background:var(--pul);border:1px solid rgba(167,139,250,0.2);
+  display:flex;gap:10px;align-items:flex-start;}
+.coach-av{width:32px;height:32px;border-radius:10px;background:rgba(167,139,250,0.15);
+  display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.coach-body{flex:1;}
+.coach-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--pu);margin-bottom:4px;}
+.coach-q{font-size:13px;line-height:1.65;color:rgba(232,237,245,0.7);}
+.coach-q strong{color:var(--pu);}
+.coach-hint{display:inline-flex;align-items:center;gap:5px;margin-top:8px;
+  padding:6px 12px;border-radius:8px;background:rgba(167,139,250,0.08);
+  border:1px solid rgba(167,139,250,0.2);font-size:11.5px;color:var(--pu);
+  cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.coach-hint:hover{background:rgba(167,139,250,0.15);}
+
+/* ── FREEZE HINT ── */
+.freeze-hint{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);
+  padding:12px 20px;border-radius:14px;
+  background:rgba(11,25,41,0.95);border:1px solid var(--cb);
+  backdrop-filter:blur(16px);font-size:13px;color:var(--text);
+  display:flex;align-items:center;gap:10px;
+  animation:slideUp 0.4s cubic-bezier(0.22,1,0.36,1);
+  z-index:50;box-shadow:0 8px 32px rgba(0,0,0,0.4);}
+@keyframes slideUp{from{opacity:0;transform:translateX(-50%) translateY(12px);}to{opacity:1;transform:translateX(-50%) translateY(0);}}
+.freeze-close{opacity:0.5;cursor:pointer;font-size:16px;margin-left:4px;}
+.freeze-close:hover{opacity:1;}
+
+/* ── SPARKS ── */
+.sparks-wrap{margin-bottom:14px;}
+.sparks-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.sparks-label::after{content:'';flex:1;height:1px;background:var(--cb);}
+.sparks{display:flex;flex-wrap:wrap;gap:6px;}
+.spark{padding:7px 12px;border-radius:100px;font-size:11.5px;
+  border:1.5px solid var(--cb);color:var(--muted);background:transparent;
+  cursor:pointer;transition:all 0.2s;line-height:1.3;}
+.spark:hover,.spark.used{border-color:var(--step-c,var(--s));
+  color:var(--step-c,var(--s));background:rgba(0,201,167,0.06);transform:translateY(-1px);}
+
+/* ── BUTTONS ── */
+.btn-row{display:flex;gap:10px;margin-top:24px;justify-content:space-between;align-items:center;}
+.btn{padding:12px 24px;border-radius:12px;font-size:14px;font-weight:600;
+  border:none;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.btn-back{background:rgba(255,255,255,0.04);color:var(--muted);border:1.5px solid var(--cb);}
+.btn-back:hover{background:rgba(255,255,255,0.08);color:var(--text);}
+.btn-next{color:#fff;}
+.btn-next:hover:not(:disabled){transform:translateY(-2px);}
+.btn-next:disabled{opacity:0.2;cursor:not-allowed;}
+
+/* ── BRIEF (Ergebnis) ── */
+.letter-wrap{background:#f8f9ff;border-radius:18px;padding:44px 40px;
+  margin-top:16px;color:#1a2035;
+  box-shadow:0 24px 80px rgba(0,0,0,0.6);}
+.letter-meta{font-size:11.5px;color:#555;line-height:1.9;margin-bottom:24px;
+  padding-bottom:18px;border-bottom:1px solid #e4e6ef;}
+.letter-subject{font-family:'Fraunces',serif;font-size:17px;font-weight:700;
+  color:#0d1525;margin-bottom:24px;}
+.letter-body p{font-size:13px;line-height:1.9;color:#2a3450;margin-bottom:14px;}
+.letter-close{margin-top:24px;font-size:13px;color:#2a3450;}
+.letter-sig{margin-top:16px;padding-top:14px;border-top:1px solid #e4e6ef;}
+.letter-sig .sig{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:#0d1525;margin-top:6px;}
+.seg-tag{display:inline-flex;align-items:center;font-size:7.5px;font-weight:700;
+  letter-spacing:0.5px;padding:2px 6px;border-radius:4px;margin-left:4px;
+  vertical-align:middle;text-transform:uppercase;}
+.tag-s{background:#d1fae5;color:#065f46;}
+.tag-t{background:#dbeafe;color:#1d4ed8;}
+.tag-a{background:#fef9c3;color:#854d0e;}
+.tag-r{background:#ffedd5;color:#9a3412;}
+.tag-k{background:#fee2e2;color:#991b1b;}
+.colorbar{display:flex;gap:3px;margin:16px 0 6px;border-radius:3px;overflow:hidden;}
+.cb-seg{flex:1;height:3px;}
+
+/* ── RESULT ACTIONS ── */
+.result-actions{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-top:24px;}
+.act{padding:12px 24px;border-radius:12px;font-size:13px;font-weight:700;
+  border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.act:hover{transform:translateY(-2px);}
+.act-print{background:var(--s);color:#fff;box-shadow:0 4px 20px rgba(0,201,167,0.3);}
+.act-copy{background:var(--a);color:#fff;box-shadow:0 4px 20px rgba(245,185,66,0.3);}
+.act-back2{background:rgba(255,255,255,0.05);color:var(--muted);border:1.5px solid var(--cb);}
+
+/* ── DASHBOARD ── */
+.dash{padding:16px 0;}
+.dash-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.dash-title{font-family:'Fraunces',serif;font-size:22px;font-weight:700;}
+.dash-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+.dash-actions{display:flex;gap:8px;}
+.dash-btn{padding:8px 16px;border-radius:10px;font-size:12px;font-weight:600;
+  border:1.5px solid var(--cb);background:transparent;color:var(--muted);
+  cursor:pointer;font-family:'DM Sans',sans-serif;transition:all 0.2s;}
+.dash-btn:hover{border-color:var(--s);color:var(--s);background:var(--sl);}
+.dash-btn.active{border-color:var(--s);color:var(--s);background:var(--sl);}
+.pupil-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;}
+.pupil-card{background:var(--card);border-radius:16px;padding:16px;
+  border:1px solid var(--cb);transition:all 0.2s;cursor:pointer;}
+.pupil-card:hover{border-color:rgba(255,255,255,0.15);transform:translateY(-2px);}
+.pupil-card.alert{border-color:rgba(245,185,66,0.4);background:rgba(245,185,66,0.04);}
+.pupil-card.stuck{border-color:rgba(255,79,106,0.35);background:rgba(255,79,106,0.04);}
+.pupil-name{font-weight:700;font-size:14px;margin-bottom:4px;color:var(--text);}
+.pupil-status{font-size:11px;color:var(--muted);margin-bottom:10px;}
+.pupil-progress{display:flex;gap:3px;margin-bottom:8px;}
+.pp-dot{flex:1;height:4px;border-radius:2px;background:var(--cb);}
+.pp-dot.done{background:var(--s);}
+.pp-dot.now{background:var(--a);}
+.pupil-tags{display:flex;flex-wrap:wrap;gap:4px;}
+.ptag{padding:2px 8px;border-radius:100px;font-size:9px;font-weight:700;
+  border:1px solid;text-transform:uppercase;letter-spacing:0.5px;}
+.ptag-stuck{background:rgba(255,79,106,0.08);border-color:rgba(255,79,106,0.25);color:var(--k);}
+.ptag-ok{background:rgba(0,201,167,0.08);border-color:rgba(0,201,167,0.25);color:var(--s);}
+.ptag-warn{background:rgba(245,185,66,0.08);border-color:rgba(245,185,66,0.25);color:var(--a);}
+.ptag-done{background:rgba(79,158,255,0.08);border-color:rgba(79,158,255,0.25);color:var(--t);}
+.dash-empty{text-align:center;padding:48px 20px;color:var(--muted);}
+.dash-empty .de-icon{font-size:40px;margin-bottom:12px;}
+.dash-empty p{font-size:13px;line-height:1.7;}
+.dash-detail{background:var(--card);border-radius:16px;padding:20px;
+  border:1px solid var(--cb);margin-top:16px;}
+.dd-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.dd-name{font-family:'Fraunces',serif;font-size:18px;font-weight:700;}
+.dd-close{padding:6px 12px;border-radius:8px;font-size:11px;font-weight:600;
+  background:transparent;border:1px solid var(--cb);color:var(--muted);
+  cursor:pointer;font-family:'DM Sans',sans-serif;}
+.dd-steps{display:flex;flex-direction:column;gap:8px;}
+.dd-step{display:flex;align-items:center;gap:12px;padding:10px 14px;
+  border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid var(--cb);}
+.dd-step-letter{font-family:'Fraunces',serif;font-size:18px;font-weight:900;width:20px;}
+.dd-step-info{flex:1;}
+.dd-step-name{font-size:12px;font-weight:600;color:var(--text);}
+.dd-step-text{font-size:11px;color:var(--muted);margin-top:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:300px;}
+.dd-step-bar{width:80px;height:4px;border-radius:2px;background:var(--cb);overflow:hidden;}
+.dd-step-fill{height:100%;border-radius:2px;}
+.dd-hint{margin-top:12px;padding:10px 14px;border-radius:10px;
+  background:rgba(167,139,250,0.05);border:1px solid rgba(167,139,250,0.15);
+  font-size:12px;color:var(--muted);}
+.dd-hint strong{color:var(--pu);}
+.class-code-wrap{text-align:center;margin-top:24px;padding:20px;
+  background:rgba(0,201,167,0.04);border:1px solid rgba(0,201,167,0.15);
+  border-radius:14px;}
+.class-code{font-family:'Fraunces',serif;font-size:28px;font-weight:900;
+  color:var(--s);letter-spacing:4px;margin:8px 0;}
+.class-code-desc{font-size:12px;color:var(--muted);}
+
+/* ── INTRO ── */
+.intro-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:8px;margin:20px 0;}
+.feat{padding:14px;border-radius:14px;background:rgba(255,255,255,0.02);
+  border:1px solid var(--cb);text-align:center;}
+.feat-icon{font-size:22px;margin-bottom:6px;}
+.feat-name{font-size:11.5px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.feat-desc{font-size:10.5px;color:var(--muted);line-height:1.5;}
+.method-pills{display:flex;gap:6px;flex-wrap:wrap;margin:16px 0;}
+.mpill{flex:1;min-width:100px;padding:10px 12px;border-radius:12px;
+  background:rgba(255,255,255,0.02);border:1px solid var(--cb);
+  display:flex;align-items:center;gap:8px;}
+.mpill-letter{font-family:'Fraunces',serif;font-size:20px;font-weight:900;}
+.mpill-text strong{display:block;font-size:11px;font-weight:700;color:var(--text);}
+.mpill-text span{font-size:10px;color:var(--muted);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.form-field{}
+.form-label{font-size:11.5px;font-weight:600;color:var(--muted);margin-bottom:6px;}
+input[type=text]{width:100%;padding:12px 14px;border-radius:12px;
+  border:1.5px solid var(--cb);background:rgba(255,255,255,0.025);
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;
+  outline:none;transition:all 0.25s;}
+input[type=text]:focus{border-color:var(--s);box-shadow:0 0 0 3px rgba(0,201,167,0.08);}
+input::placeholder{color:var(--faint);}
+
+/* ── TOOLTIP / TIPP-PANEL ── */
+.tipp-panel{margin-top:10px;padding:14px 16px;border-radius:12px;
+  background:rgba(167,139,250,0.04);border:1px solid rgba(167,139,250,0.15);
+  font-size:12.5px;line-height:1.65;animation:cardIn 0.3s ease;}
+.tipp-fix{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;
+  border-radius:7px;background:rgba(255,79,106,0.07);border:1px solid rgba(255,79,106,0.2);
+  color:#f87171;font-size:11.5px;margin:2px;cursor:pointer;transition:all 0.2s;}
+.tipp-fix:hover{background:rgba(0,201,167,0.08);border-color:var(--s);color:var(--s);}
+.tipp-ok{color:var(--s);font-weight:700;font-size:13px;display:flex;
+  align-items:center;gap:6px;}
+.tipp-floskel{padding:8px 12px;border-radius:9px;background:rgba(245,185,66,0.05);
+  border:1px solid rgba(245,185,66,0.15);margin-bottom:6px;font-size:12px;line-height:1.6;}
+.tipp-floskel-msg{color:var(--a);font-weight:700;font-size:11px;margin-bottom:3px;}
+.tipp-floskel-fix{color:var(--s);font-size:11px;}
+.spell-toggle{display:inline-flex;align-items:center;gap:5px;margin-top:10px;
+  padding:7px 14px;border-radius:9px;background:rgba(167,139,250,0.07);
+  border:1.5px solid rgba(167,139,250,0.2);color:var(--pu);
+  font-size:11.5px;font-weight:700;cursor:pointer;transition:all 0.2s;
+  font-family:'DM Sans',sans-serif;}
+.spell-toggle:hover{background:rgba(167,139,250,0.14);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:560px){
+  .card{padding:20px 16px;}
+  .letter-wrap{padding:28px 18px;}
+  .compare{grid-template-columns:1fr;}
+  .btn-row{flex-direction:column;}
+  .btn{width:100%;text-align:center;}
+  .result-actions{flex-direction:column;}
+  .act{width:100%;text-align:center;}
+  .form-grid{grid-template-columns:1fr;}
+  .pupil-grid{grid-template-columns:1fr;}
+}
+
+@media print{
+  @page{size:A4;margin:18mm 22mm;}
+  body,html{background:#fff!important;color:#000!important;}
+  body::before{display:none!important;}
+  .mode-bar,.app>*:not(.container),.btn-row,.result-actions,.ibox,.compare,
+  .sparks-wrap,.qmeter,.coach,.spell-toggle,.tipp-panel,.interview,.gerust,
+  .progress-wrap,.step-hdr,.intro-features,.method-pills,
+  .colorbar,.freeze-hint{display:none!important;}
+  .container{max-width:100%!important;padding:0!important;}
+  .card{background:transparent!important;border:none!important;box-shadow:none!important;padding:0!important;}
+  .letter-wrap{background:#fff!important;box-shadow:none!important;border:none!important;padding:0!important;}
+  .letter-wrap *{color:#000!important;}
+  .letter-subject{font-size:13pt!important;}
+  .letter-body p{font-size:11pt!important;line-height:1.75!important;}
+  .seg-tag{display:none!important;}
+}
+
+/* ── AI COACH PANEL ── */
+.ai-coach-wrap{margin-top:14px;border-radius:16px;overflow:hidden;
+  border:1px solid rgba(167,139,250,0.25);background:rgba(10,18,35,0.6);}
+.ai-coach-header{display:flex;align-items:center;gap:10px;padding:10px 14px;
+  background:rgba(167,139,250,0.08);border-bottom:1px solid rgba(167,139,250,0.15);}
+.ai-coach-av{width:28px;height:28px;border-radius:8px;background:rgba(167,139,250,0.2);
+  display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.ai-coach-label{font-size:10px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--pu);}
+.ai-coach-status{font-size:10px;color:var(--muted);margin-left:auto;display:flex;
+  align-items:center;gap:5px;}
+.ai-dot{width:6px;height:6px;border-radius:50%;background:var(--s);}
+.ai-dot.thinking{background:var(--a);animation:pulse 1s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.3;}}
+.ai-coach-body{padding:12px 14px;}
+.ai-feedback{font-size:13px;line-height:1.7;color:rgba(232,237,245,0.8);min-height:20px;}
+.ai-feedback .ai-good{color:var(--s);font-weight:600;}
+.ai-feedback .ai-warn{color:var(--a);font-weight:600;}
+.ai-feedback .ai-fix{color:var(--k);font-weight:600;}
+.ai-actions{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+.ai-btn{padding:6px 12px;border-radius:8px;font-size:11.5px;font-weight:600;
+  border:1.5px solid;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;
+  background:transparent;}
+.ai-btn-suggest{border-color:rgba(0,201,167,0.3);color:var(--s);}
+.ai-btn-suggest:hover{background:var(--sl);}
+.ai-btn-fix{border-color:rgba(245,185,66,0.3);color:var(--a);}
+.ai-btn-fix:hover{background:rgba(245,185,66,0.08);}
+.ai-btn-freeze{border-color:rgba(167,139,250,0.3);color:var(--pu);}
+.ai-btn-freeze:hover{background:var(--pul);}
+.ai-suggestion{margin-top:10px;padding:12px 14px;border-radius:10px;
+  background:rgba(0,201,167,0.05);border:1px solid rgba(0,201,167,0.2);
+  font-size:13px;line-height:1.7;color:var(--text);position:relative;}
+.ai-sug-label{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--s);margin-bottom:6px;}
+.ai-sug-text{font-style:italic;color:rgba(232,237,245,0.85);}
+.ai-sug-actions{display:flex;gap:6px;margin-top:8px;}
+.ai-sug-use{padding:5px 12px;border-radius:7px;font-size:11px;font-weight:700;
+  background:var(--s);color:#fff;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.ai-sug-discard{padding:5px 10px;border-radius:7px;font-size:11px;font-weight:600;
+  background:transparent;color:var(--muted);border:1px solid var(--cb);
+  cursor:pointer;font-family:'DM Sans',sans-serif;}
+.ai-cursor{display:inline-block;width:2px;height:14px;background:var(--pu);
+  vertical-align:middle;margin-left:1px;animation:blink 0.7s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+/* API key setup */
+.api-setup{padding:16px;border-radius:12px;background:rgba(0,201,167,0.04);
+  border:1px solid rgba(0,201,167,0.15);margin-bottom:16px;}
+.api-setup-title{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+  color:var(--s);margin-bottom:8px;}
+.api-setup-row{display:flex;gap:8px;align-items:center;}
+.api-input{flex:1;padding:9px 12px;border-radius:10px;
+  border:1.5px solid var(--cb);background:rgba(255,255,255,0.03);
+  color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;outline:none;
+  transition:all 0.2s;}
+.api-input:focus{border-color:var(--s);}
+.api-save{padding:9px 16px;border-radius:10px;background:var(--s);color:#fff;
+  border:none;cursor:pointer;font-size:12px;font-weight:700;
+  font-family:'DM Sans',sans-serif;white-space:nowrap;}
+.api-save:hover{filter:brightness(1.1);}
+.api-status{font-size:11px;margin-top:6px;}
+.api-ok{color:var(--s);}
+.api-err{color:var(--k);}
+
+</style>
+</head>
+<body>
+
+<div class="mode-bar">
+  <div class="mode-logo">STARK</div>
+  <div class="mode-tabs">
+    <button class="mode-tab active" id="tab-schueler" onclick="switchMode('schueler')">✏️ Schüler:in</button>
+    <button class="mode-tab" id="tab-lp" onclick="switchMode('lehrperson')">👁 Lehrperson</button>
+  </div>
+</div>
+
+<div class="app">
+  <div id="schueler-view">
+    <div class="hero">
+      <div class="hero-badge">✦ Bewerbungs-Coach</div>
+      <div class="stark-word">
+        <span class="l0">S</span><span class="l1">T</span><span class="l2">A</span><span class="l3">R</span><span class="l4">K</span>
+      </div>
+      <div class="hero-sub">Dein Brief, deine Geschichte.</div>
+      <div class="hero-desc">5 Schritte zu einem Motivationsschreiben das zeigt, wer du wirklich bist.</div>
+    </div>
+    <div class="container" id="app"></div>
+  </div>
+  <div id="lehrperson-view" style="display:none;">
+    <div class="container" id="dash-app"></div>
+  </div>
+</div>
+
+<div id="freeze-hint" class="freeze-hint" style="display:none;">
+  <span>💬</span>
+  <span id="freeze-msg">Brauchst du einen Tipp? Schau dir die Impulse unten an.</span>
+  <span class="freeze-close" onclick="dismissFreeze()">✕</span>
+</div>
+
+<script>
+// ═══════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════
+const STEPS = [
+  {
+    key:"S", full:"Story", de:"Deine Geschichte",
+    hex:"#00c9a7", light:"rgba(0,201,167,0.12)",
+    desc:"Beginne mit einem echten Moment aus deinem Leben.",
+    why:"Lehrmeister lesen viele Bewerbungen. Die meisten beginnen mit «Hiermit bewerbe ich mich…». Dein Brief beginnt mit einer Geschichte — das bleibt hängen.",
+    bad:"Hiermit bewerbe ich mich für die ausgeschriebene Lehrstelle als Informatiker.",
+    good:"Mit 12 habe ich zum ersten Mal den Laptop meiner Mutter repariert. Seitdem lässt mich Technik nicht mehr los.",
+    // Geführtes Interview
+    interview: [
+      {
+        id:"erfahrung",
+        text:"Hast du schon mal geschnuppert oder etwas mit diesem Beruf erlebt?",
+        options:["Ja, ich war schnuppern","Jemand in meiner Familie macht diesen Beruf","Ich habe es selbst ausprobiert","Ich habe davon gehört / gelesen"]
+      },
+      {
+        id:"moment",
+        text:"Was war ein Moment, den du nicht vergessen hast?",
+        type:"text",
+        placeholder:"Z.B. Als ich gesehen habe wie... / Als mir jemand gezeigt hat..."
+      }
+    ],
+    gerustFn:(iv)=>{
+      const erfahrung = iv.erfahrung||"...";
+      const moment = iv.moment||"...";
+      let starter = erfahrung.includes("schnuppern") ? "Während meiner Schnupperwoche" :
+                    erfahrung.includes("Familie") ? "In meiner Familie" :
+                    erfahrung.includes("ausprobiert") ? "Als ich es selbst ausprobiert habe" : "Als ich davon erfahren habe";
+      return `<span class="blank">${starter}</span> habe ich erlebt: <span class="blank">${moment||"..."}</span>. Genau da wusste ich: <span class="blank">Das will ich lernen.</span>`;
+    },
+    sparks:["Als ich zum ersten Mal...","Ein Moment, der alles veränderte:","Schon als ich klein war...","Nach meiner Schnupperlehre war mir klar:","Der Tag, an dem ich wusste:"],
+    placeholder:"Erzähle einen kurzen, echten Moment — was hast du erlebt, gesehen, gespürt?",
+    coachQ:(text)=>{
+      if(!text||text.length<20) return "Was genau hast du in diesem Moment <strong>gespürt</strong>? Versuch, das in einem Satz zu beschreiben.";
+      if(text.match(/hiermit|bewerbe ich mich/i)) return "Dieser Anfang klingt nach einem Formular. Welcher <strong>echte Moment</strong> hat dich zu diesem Beruf gebracht?";
+      if(!text.match(/ich|mich|mir|mein/i)) return "Gut angefangen! Jetzt noch: <strong>Wo warst du?</strong> Was hast du gesehen oder gefühlt?";
+      return "Stark! Gibt es eine <strong>konkrete Person oder Situation</strong> die du noch erwähnen könntest?";
+    },
+    coachHint:"Stell dir vor, jemand dreht einen Film über deinen Weg. Welche Szene zeigt am besten, wie du zu diesem Beruf kamst?",
+    check:(v)=>{
+      if(!v) return {score:0,chips:[]};
+      const w=v.split(/\s+/).length;
+      let chips=[
+        {label:"Konkret",hit:!!(v.match(/als ich|da|dort|beim|während|einmal|mal/i)&&w>8)},
+        {label:"Persönlich",hit:!!(v.match(/ich|mich|mir|mein/i))},
+        {label:"Kein Formular",hit:!v.match(/hiermit|bewerbe ich mich|auf ihre ausschreibung/i)},
+        {label:"Ausreichend",hit:w>=12},
+      ];
+      const score=Math.round(chips.filter(c=>c.hit).length/chips.length*100);
+      return {score,chips};
+    }
+  },
+  {
+    key:"T", full:"Talente", de:"Was du drauf hast",
+    hex:"#4f9eff", light:"rgba(79,158,255,0.12)",
+    desc:"Zeige deine Stärken — mit Beweisen, nicht mit Adjektiven.",
+    why:"«Ich bin motiviert und teamfähig» sagt jeder. Was zählt: Was hast du GEMACHT, nicht was du BIST. Jede Stärke braucht einen Beweis.",
+    bad:"Ich bin zuverlässig, motiviert und teamfähig. Ausserdem arbeite ich sehr genau.",
+    good:"Im Klassenprojekt habe ich die Planung übernommen und dafür gesorgt, dass wir als einzige Gruppe pünktlich fertig wurden.",
+    interview:[
+      {
+        id:"staerke",
+        text:"Welche Stärke passt am besten zu dir?",
+        options:["Ich helfe gerne anderen","Ich arbeite genau und sorgfältig","Ich lerne schnell Neues","Ich übernehme Verantwortung","Ich bin ruhig in schwierigen Situationen"]
+      },
+      {
+        id:"beweis",
+        text:"Wann hast du das bewiesen? Nenn eine konkrete Situation:",
+        type:"text",
+        placeholder:"Z.B. Im Schulprojekt / Beim Sport / Zuhause / In der Schnupperlehre..."
+      }
+    ],
+    gerustFn:(iv)=>{
+      const staerke = iv.staerke||"...";
+      const beweis = iv.beweis||"...";
+      const staerkeKurz = staerke.includes("helfe") ? "gerne mit anpacke" :
+                         staerke.includes("genau") ? "sorgfältig arbeite" :
+                         staerke.includes("lerne") ? "schnell lerne" :
+                         staerke.includes("Verantwortung") ? "Verantwortung übernehme" : "ruhig bleibe";
+      return `Ich zeige gerne, dass ich <span class="blank">${staerkeKurz}</span>. Zum Beispiel: <span class="blank">${beweis||"..."}</span>.`;
+    },
+    sparks:["Im Schulprojekt habe ich...","Beim Sport habe ich gelernt:","Zuhause helfe ich oft...","In der Schnupperlehre konnte ich...","Meine Lehrperson sagt über mich:"],
+    placeholder:"Nenne 1–2 Stärken mit konkreten Beispielen. Was hast du GEMACHT?",
+    coachQ:(text)=>{
+      if(!text||text.length<20) return "Beschreibe eine Situation wo du diese Stärke <strong>bewiesen</strong> hast — auch Kleinigkeiten zählen!";
+      if(text.match(/^ich bin \w+ und \w+/i)&&!text.match(/habe|gemacht|gelernt/i)) return "Du nennst Adjektive — aber welches <strong>konkrete Erlebnis</strong> zeigt das?";
+      if(text.match(/habe ich|konnte ich|beim|im projekt/i)) return "Super mit dem Beispiel! Noch eine Frage: <strong>Was war das Ergebnis?</strong> Was ist dadurch besser geworden?";
+      return "Gut! Schreib noch dazu, <strong>wo und wann</strong> das war.";
+    },
+    coachHint:"Formel: «Ich bin [Stärke] — das zeige ich an [konkretem Beispiel].» Kein Beispiel = keine Aussage.",
+    check:(v)=>{
+      if(!v) return {score:0,chips:[]};
+      const w=v.split(/\s+/).length;
+      let chips=[
+        {label:"Beispiel",hit:!!(v.match(/habe|konnte|beim|im|als ich|einmal|projekt|sport|schule/i))},
+        {label:"Nicht nur Adjektive",hit:!!(v.match(/habe|machte|war|ging|übernahm|konnte/i))},
+        {label:"Konkrete Situation",hit:!!(v.match(/beim|im|als|während|in der/i))},
+        {label:"Ausreichend",hit:w>=12},
+      ];
+      const score=Math.round(chips.filter(c=>c.hit).length/chips.length*100);
+      return {score,chips};
+    }
+  },
+  {
+    key:"A", full:"Antrieb", de:"Warum dieser Beruf",
+    hex:"#f5b942", light:"rgba(245,185,66,0.12)",
+    desc:"Was treibt dich an? Warum genau dieser Beruf?",
+    why:"Echte Begeisterung spürt man. Zeige, dass du weisst was dich erwartet — und dass du es WILLST. Nicht weil es «gut tönt», sondern weil es zu DIR passt.",
+    bad:"Der Beruf interessiert mich sehr und ich denke, dass er gute Zukunftsperspektiven hat.",
+    good:"Wenn ich einem Menschen helfe und ich sehe das Lächeln — vergesse ich die Zeit. Das will ich jeden Tag spüren.",
+    interview:[
+      {
+        id:"faszination",
+        text:"Was fasziniert dich an diesem Beruf am meisten?",
+        options:["Mit Menschen arbeiten","Etwas mit den Händen erschaffen","Probleme lösen","Anderen helfen","Etwas Neues lernen jeden Tag"]
+      },
+      {
+        id:"vergessen",
+        text:"Wann vergisst du die Zeit? Bei welcher Tätigkeit?",
+        type:"text",
+        placeholder:"Z.B. Wenn ich jemandem erkläre wie etwas funktioniert..."
+      }
+    ],
+    gerustFn:(iv)=>{
+      const fasc = iv.faszination||"...";
+      const verg = iv.vergessen||"...";
+      const fascKurz = fasc.includes("Menschen") ? "mit Menschen zu arbeiten" :
+                       fasc.includes("Händen") ? "mit den Händen zu schaffen" :
+                       fasc.includes("Probleme") ? "Probleme zu lösen" :
+                       fasc.includes("helfen") ? "anderen zu helfen" : "immer Neues zu lernen";
+      return `Was mich an diesem Beruf fasziniert ist <span class="blank">${fascKurz}</span>. Wenn ich <span class="blank">${verg||"..."}</span>, vergesse ich die Zeit. Das will ich zum Beruf machen.`;
+    },
+    sparks:["Was mich fasziniert:","Ich will jeden Tag...","Dieser Beruf passt zu mir, weil...","Das Gefühl wenn ich...","Nach der Schnupperlehre wusste ich:"],
+    placeholder:"Was begeistert dich? Was willst du lernen? Warum passt dieser Beruf zu DIR?",
+    coachQ:(text)=>{
+      if(!text||text.length<20) return "Was <strong>fühlst</strong> du, wenn du an diesen Beruf denkst? Schreib das auf.";
+      if(text.match(/zukunft|perspektiv|verdien|geld|sicherer job/i)) return "Das sind rationale Gründe — aber was <strong>begeistert dich wirklich</strong>? Was macht dir Freude daran?";
+      if(text.match(/faszin|begeist|liebe|leidenschaft|gefühl|wenn ich/i)) return "Das klingt echt! Noch konkreter: <strong>Warum passt das genau zu dir?</strong> Was ist dein besonderes Interesse?";
+      return "Gut! Noch eine Frage: <strong>Was erwartet dich in diesem Beruf</strong> das andere Berufe nicht bieten?";
+    },
+    coachHint:"Was macht dir so viel Spass, dass du die Zeit vergisst? Das ist dein Antrieb.",
+    check:(v)=>{
+      if(!v) return {score:0,chips:[]};
+      const w=v.split(/\s+/).length;
+      let chips=[
+        {label:"Echtes Gefühl",hit:!!(v.match(/faszin|begeist|liebe|leidenschaft|gefühl|mag|freude|spass/i))},
+        {label:"Kein «Perspektiven»",hit:!v.match(/zukunftsperspektiv|geld|lohn|sicher|verdien/i)},
+        {label:"Persönlicher Bezug",hit:!!(v.match(/ich|mich|mir|mein|zu mir/i))},
+        {label:"Ausreichend",hit:w>=12},
+      ];
+      const score=Math.round(chips.filter(c=>c.hit).length/chips.length*100);
+      return {score,chips};
+    }
+  },
+  {
+    key:"R", full:"Resonanz", de:"Warum dieser Betrieb",
+    hex:"#ff7c45", light:"rgba(255,124,69,0.12)",
+    desc:"Zeige, dass du dich informiert hast und zum Betrieb passt.",
+    why:"Lehrmeister wollen wissen: Bewirbst du dich bei 100 Firmen oder gezielt bei mir? Ein einziges konkretes Detail zeigt: Du hast dir Mühe gegeben.",
+    bad:"Ihr Betrieb hat einen guten Ruf und ich denke, ich könnte dort viel lernen.",
+    good:"Auf Ihrer Website habe ich gesehen, dass Sie mit Wärmepumpen arbeiten. Das Thema Energie fasziniert mich — genau das will ich lernen.",
+    interview:[
+      {
+        id:"recherche",
+        text:"Was weisst du über diesen Betrieb?",
+        options:["Ich war zur Schnupperlehre dort","Ich habe die Website besucht","Ich kenne jemanden der dort arbeitet","Ich habe Bewertungen gelesen","Ich wohne in der Nähe und habe ihn gesehen"]
+      },
+      {
+        id:"detail",
+        text:"Was hat dich konkret beeindruckt oder interessiert?",
+        type:"text",
+        placeholder:"Z.B. Das Projekt auf ihrer Website / Die freundlichen Leute beim Schnuppern..."
+      }
+    ],
+    gerustFn:(iv)=>{
+      const rec = iv.recherche||"...";
+      const det = iv.detail||"...";
+      const recStart = rec.includes("Schnupperlehre") ? "Bei meiner Schnupperlehre" :
+                       rec.includes("Website") ? "Auf Ihrer Website" :
+                       rec.includes("jemanden") ? "Von jemandem der bei Ihnen arbeitet" :
+                       rec.includes("Bewertungen") ? "In Bewertungen" : "In Ihrer Nähe";
+      return `<span class="blank">${recStart}</span> habe ich <span class="blank">${det||"..."}</span> kennengelernt. Das hat mich beeindruckt, weil es genau zu <span class="blank">meiner Überzeugung</span> passt.`;
+    },
+    sparks:["Was mich beeindruckt:","Bei der Schnupperlehre fiel mir auf:","Auf Ihrer Website habe ich gelesen:","Was diesen Betrieb unterscheidet:","Ich passe zu Ihnen, weil:"],
+    placeholder:"Was weisst du über den Betrieb? Was hat dich konkret beeindruckt?",
+    coachQ:(text)=>{
+      if(!text||text.length<20) return "Schau dir die Website oder Social Media des Betriebs an. <strong>Was fällt dir auf?</strong>";
+      if(text.match(/guten ruf|viel lernen|grosses unternehmen/i)) return "Das ist zu allgemein. <strong>Was genau</strong> bei diesem Betrieb hat dich beeindruckt — ein Detail?";
+      if(text.match(/website|schnupper|gelesen|gesehen|aufgefallen/i)) return "Super recherchiert! Noch besser: <strong>Warum passt genau das zu dir?</strong> Was ist die Verbindung?";
+      return "Gut! Noch konkreter: <strong>Was unterscheidet diesen Betrieb</strong> von allen anderen?";
+    },
+    coachHint:"Schau: Website, Instagram, Google-Bewertungen. Ein einziges Detail zeigt: Du hast dich wirklich interessiert.",
+    check:(v)=>{
+      if(!v) return {score:0,chips:[]};
+      const w=v.split(/\s+/).length;
+      let chips=[
+        {label:"Konkret recherchiert",hit:!!(v.match(/website|schnupper|gelesen|gesehen|aufgefallen|instagram|projekt|team/i))},
+        {label:"Kein «guter Ruf»",hit:!v.match(/guten ruf|viel lernen|grosses unternehmen/i)},
+        {label:"Verbindung zu dir",hit:!!(v.match(/passt|weil|da ich|genau das|überzeugt/i))},
+        {label:"Ausreichend",hit:w>=10},
+      ];
+      const score=Math.round(chips.filter(c=>c.hit).length/chips.length*100);
+      return {score,chips};
+    }
+  },
+  {
+    key:"K", full:"Klartext", de:"Starker Schluss",
+    hex:"#ff4f6a", light:"rgba(255,79,106,0.12)",
+    desc:"Schluss ohne Floskeln. Selbstbewusst und direkt.",
+    why:"Der letzte Satz bleibt hängen. Kein «Ich würde mich freuen, wenn…». Steh hin und sag, was du willst. Mut wirkt.",
+    bad:"Ich würde mich sehr freuen, wenn Sie meine Bewerbung berücksichtigen würden.",
+    good:"Ich bin bereit, alles zu geben. Geben Sie mir die Chance, Sie davon persönlich zu überzeugen.",
+    interview:[
+      {
+        id:"bereit",
+        text:"Was willst du mit diesem Satz sagen?",
+        options:["Ich bin bereit und motiviert","Ich will ein Gespräch","Ich zeige was ich kann","Ich bin der/die Richtige für diese Stelle"]
+      },
+      {
+        id:"ton",
+        text:"Wie soll dein Schluss klingen?",
+        options:["Selbstbewusst und direkt","Herzlich und persönlich","Klar und professionell"],
+        mini:true
+      }
+    ],
+    gerustFn:(iv)=>{
+      const bereit = iv.bereit||"...";
+      const ton = iv.ton||"";
+      let satz = bereit.includes("bereit") ? "Ich bin bereit — geben Sie mir die Chance." :
+                 bereit.includes("Gespräch") ? "Ich freue mich auf ein persönliches Gespräch." :
+                 bereit.includes("zeige") ? "Ich zeige Ihnen gerne, was in mir steckt." :
+                 "Ich überzeuge Sie gerne persönlich.";
+      return `<span class="blank">${satz}</span>`;
+    },
+    sparks:["Geben Sie mir die Chance...","Ich bin bereit — wann darf ich anfangen?","Ich überzeuge Sie gerne persönlich.","Ein Gespräch sagt mehr als jeder Brief.","Ich zeige Ihnen, was in mir steckt."],
+    placeholder:"Dein Schlusssatz — direkt, selbstbewusst, einladend...",
+    coachQ:(text)=>{
+      if(!text||text.length<10) return "Was möchtest du am Ende <strong>klar sagen</strong>? Was soll der Lehrmeister denken wenn er fertig gelesen hat?";
+      if(text.match(/würde mich freuen|berücksichtigen|in betracht/i)) return "Das ist eine Floskel! Sag <strong>direkt was du willst</strong> — ohne «würde».";
+      if(text.match(/würde|könnte|möchte|vielleicht/i)) return "Du verwendest Konjunktiv — das macht dich klein. Ersetze «würde» durch «werde» oder «bin».";
+      return "Stark! Ist der Satz wirklich <strong>ohne Konjunktiv</strong>? Dann ist er perfekt.";
+    },
+    coachHint:"Kein «würde», kein «könnte», kein «möchte». Sag was du BIST und WILLST — nicht was du dir wünschst.",
+    check:(v)=>{
+      if(!v) return {score:0,chips:[]};
+      const w=v.split(/\s+/).length;
+      let chips=[
+        {label:"Kein Konjunktiv",hit:!v.match(/würde|könnte|möchte|vielleicht|dürfte/i)},
+        {label:"Kein «würde mich freuen»",hit:!v.match(/würde mich freuen|berücksichtigen/i)},
+        {label:"Einladung",hit:!!(v.match(/gespräch|chance|überzeugen|zeigen|persönlich|bereit/i))},
+        {label:"Kurz & stark",hit:w>=4&&w<=25},
+      ];
+      const score=Math.round(chips.filter(c=>c.hit).length/chips.length*100);
+      return {score,chips};
+    }
+  }
+];
+
+const SPELL_RULES=[
+  [/das\s+selbe/gi,"dasselbe"],[/zu\s+hause/gi,"zuhause"],
+  [/so\s+dass/gi,"sodass"],[/auf\s+grund/gi,"aufgrund"],
+  [/(D|d)aß/g,"$1ass"],[/muß/gi,"muss"],
+  [/ihren betrieb/g,"Ihren Betrieb"],[/ihre firma/gi,"Ihre Firma"],
+  [/([.!?])([A-ZÄÖÜ])/g,"$1 $2"],[/\s{2,}/g," "],
+];
+const FLOSKEL_PATTERNS=[
+  {pat:/hiermit bewerbe ich mich/i,msg:"«Hiermit bewerbe ich mich» ist die langweiligste Eröffnung.",fix:"Starte direkt mit deiner Geschichte"},
+  {pat:/ich bin motiviert/i,msg:"«Ich bin motiviert» sagt jeder — zeig es mit einem Beispiel.",fix:"Beschreibe eine konkrete Situation"},
+  {pat:/ich bin teamfähig/i,msg:"«Teamfähig» ist ein leeres Wort.",fix:"z.B. «Im Projekt habe ich koordiniert»"},
+  {pat:/würde mich freuen/i,msg:"Konjunktiv macht dich klein!",fix:"«Ich freue mich auf ein Gespräch»"},
+  {pat:/guten Ruf/i,msg:"«Guter Ruf» ist zu allgemein.",fix:"Nenne ein konkretes Detail"},
+  {pat:/hochmotiviert/i,msg:"«Hochmotiviert» klingt wie ein Inserat.",fix:"Zeig es mit einem echten Erlebnis"},
+];
+
+function checkText(text){
+  if(!text||text.length<10) return {fixes:[],floskeln:[],clean:text};
+  let fixes=[],clean=text;
+  SPELL_RULES.forEach(([pat,repl])=>{
+    const matches=text.match(pat);
+    if(matches){matches.forEach(m=>{if(m.trim()!==repl.trim()) fixes.push({wrong:m.trim(),right:repl,type:"spell"});});clean=clean.replace(pat,repl);}
+  });
+  let floskeln=[];
+  FLOSKEL_PATTERNS.forEach(f=>{if(f.pat.test(text)) floskeln.push(f);});
+  return{fixes,floskeln,clean};
+}
+
+// ═══════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════
+let state = {
+  screen: "intro",  // intro | step | result
+  step: 0,
+  data: {name:"",beruf:"",betrieb:"",ort:""},
+  answers: {S:"",T:"",A:"",R:"",K:""},
+  interviews: {S:{},T:{},A:{},R:{},K:{}},
+  showSpell: null,
+  showCoach: true,
+  copied: false,
+  // Dashboard
+  pupils: [],
+  dashSelected: null,
+};
+
+// Simulated class data for demo
+let demoLoaded = false;
+
+// Freeze timer
+let freezeTimer = null;
+let lastTyped = Date.now();
+let freezeShown = false;
+
+function resetFreeze(){
+  lastTyped = Date.now();
+  freezeShown = false;
+  document.getElementById("freeze-hint").style.display="none";
+  clearTimeout(freezeTimer);
+  freezeTimer = setTimeout(checkFreeze, 45000);
+}
+function checkFreeze(){
+  if(Date.now()-lastTyped > 44000 && !freezeShown && state.screen==="step"){
+    freezeShown=true;
+    const s=STEPS[state.step];
+    document.getElementById("freeze-msg").textContent = 
+      `Feststecken? Klick «Ich stecke fest» — die KI stellt dir eine Frage!`;
+    document.getElementById("freeze-hint").style.display="flex";
+  }
+}
+function dismissFreeze(){
+  document.getElementById("freeze-hint").style.display="none";
+  freezeShown=false;
+}
+
+// ═══════════════════════════════════════
+// RENDER ENGINE
+// ═══════════════════════════════════════
+function render(){
+  const app = document.getElementById("app");
+  if(!app) return;
+  if(state.screen==="intro") app.innerHTML = renderIntro();
+  else if(state.screen==="step") app.innerHTML = renderStep();
+  else if(state.screen==="result") app.innerHTML = renderResult();
+  attachEvents();
+  updateProgress();
+}
+
+function renderIntro(){
+  const {name,beruf,betrieb,ort} = state.data;
+  const canStart = name&&beruf&&betrieb&&ort;
+  return `
+  <div style="height:24px"></div>
+  <div class="card">
+    <div class="ibox" style="border-color:rgba(0,201,167,0.25);color:var(--s);margin-bottom:20px;">
+      <div class="ibox-head">Warum STARK?</div>
+      <div class="ibox-body"><strong>STARK</strong> führt dich in 5 Schritten durch dein Motivationsschreiben —
+      mit geführten Fragen, Satzgerüsten und einem Coach der dir hilft wenn du nicht weiterkommst.</div>
+    </div>
+    <div class="method-pills">
+      ${STEPS.map(s=>`
+      <div class="mpill">
+        <div class="mpill-letter" style="color:${s.hex}">${s.key}</div>
+        <div class="mpill-text"><strong>${s.full}</strong><span>${s.de}</span></div>
+      </div>`).join("")}
+    </div>
+    <div class="intro-features">
+      <div class="feat"><div class="feat-icon">🎯</div><div class="feat-name">Geführt</div><div class="feat-desc">Schritt für Schritt mit Fragen</div></div>
+      <div class="feat"><div class="feat-icon">✍️</div><div class="feat-name">Satzgerüst</div><div class="feat-desc">Vorlage die sich anpasst</div></div>
+      <div class="feat"><div class="feat-icon">💬</div><div class="feat-name">KI-Coach</div><div class="feat-desc">Eine Frage wenn du feststeckst</div></div>
+      <div class="feat"><div class="feat-icon">📄</div><div class="feat-name">Druckfertig</div><div class="feat-desc">Brief am Ende exportieren</div></div>
+    </div>
+    <div style="border-top:1px solid var(--cb);padding-top:20px;margin-top:4px;">
+      <div class="sparks-label">Deine Angaben</div>
+      <div class="form-grid">
+        <div class="form-field">
+          <div class="form-label">Dein Name</div>
+          <input type="text" id="inp-name" value="${state.data.name}" placeholder="Vor- und Nachname">
+        </div>
+        <div class="form-field">
+          <div class="form-label">Wohnort</div>
+          <input type="text" id="inp-ort" value="${state.data.ort}" placeholder="z.B. Basel">
+        </div>
+        <div class="form-field">
+          <div class="form-label">Lehrberuf</div>
+          <input type="text" id="inp-beruf" value="${state.data.beruf}" placeholder="z.B. Informatiker EFZ">
+        </div>
+        <div class="form-field">
+          <div class="form-label">Betrieb</div>
+          <input type="text" id="inp-betrieb" value="${state.data.betrieb}" placeholder="Name des Lehrbetriebs">
+        </div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;">
+        <button class="btn btn-next" id="btn-start" style="background:linear-gradient(135deg,#f5b942,#d49a28);${!canStart?'opacity:0.25;cursor:not-allowed;':''}" ${!canStart?'disabled':''} onclick="startSteps()">Los geht's →</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderStep(){
+  const s = STEPS[state.step];
+  const iv = state.interviews[s.key]||{};
+  const answer = state.answers[s.key]||"";
+  const {score,chips} = s.check(answer);
+  const barColor = score>=80?"var(--s)":score>=50?"var(--a)":"var(--k)";
+  const gerust = s.gerustFn(iv);
+  const showSpell = state.showSpell===state.step;
+  const spellResult = showSpell ? checkText(answer) : null;
+
+  // Interview HTML
+  let ivHTML = "";
+  if(s.interview && s.interview.length>0){
+    ivHTML = `<div class="interview">
+      <div class="interview-title">Denkpause — zuerst antworten</div>
+      ${s.interview.map((q,qi)=>{
+        if(q.type==="text"){
+          return `<div class="iq">
+            <div class="iq-text">${q.text}</div>
+            <input type="text" class="iq-input" id="iq-${s.key}-${qi}" 
+              value="${iv[q.id]||''}" placeholder="${q.placeholder||''}"
+              oninput="setIV('${s.key}','${q.id}',this.value)">
+          </div>`;
+        }
+        return `<div class="iq">
+          <div class="iq-text">${q.text}</div>
+          <div class="iq-options">
+            ${q.options.map(opt=>`
+              <button class="iq-opt${q.mini?' iq-mini':''} ${iv[q.id]===opt?'selected':''}"
+                style="${iv[q.id]===opt?`border-color:${s.hex};background:${s.light};color:${s.hex};`:''}"
+                onclick="setIV('${s.key}','${q.id}','${opt.replace(/'/g,"\\'")}')">
+                ${opt}
+              </button>`).join("")}
+          </div>
+        </div>`;
+      }).join("")}
+    </div>`;
+  }
+
+  // Satzgerüst
+  const gerustHTML = Object.keys(iv).length>0 ? `
+    <div class="gerust">
+      <div class="gerust-title">Dein Satzgerüst</div>
+      <div class="gerust-text">${gerust}</div>
+    </div>` : "";
+
+  // Quality chips
+  const chipsHTML = answer.length>5 ? `
+    <div class="qmeter">
+      <div class="qm-bar-wrap">
+        <div class="qm-track"><div class="qm-fill" style="width:${score}%;background:${barColor};"></div></div>
+        <div class="qm-pct" style="color:${barColor}">${score}%</div>
+      </div>
+      <div class="qm-chips">
+        ${chips.map(c=>`<div class="qm-chip ${c.hit?'hit':'miss'}" style="border-color:${c.hit?s.hex:'rgba(255,255,255,0.12)'};color:${c.hit?s.hex:'var(--muted)'}">
+          ${c.hit?'✓':'○'} ${c.label}
+        </div>`).join("")}
+      </div>
+    </div>` : "";
+
+  // AI Coach panel
+  const coachHTML = `
+    <div class="ai-coach-wrap">
+      <div class="ai-coach-header">
+        <div class="ai-coach-av">🤖</div>
+        <div class="ai-coach-label">KI-Coach</div>
+        <div class="ai-coach-status">
+          <div class="ai-dot"></div>
+          <span>bereit</span>
+        </div>
+      </div>
+      <div class="ai-coach-body">
+        <div class="ai-feedback" id="ai-feedback-text">${!apiKey ? '<span style="color:var(--muted);font-size:12px;">⚙ Kein API-Key aktiv — im Lehrperson-Tab eingeben.</span>' : answer.length > 20 ? '<span style="color:var(--muted);font-size:12px;">Schreib weiter — Feedback kommt nach einer kurzen Pause.</span>' : '<span style="color:var(--muted);font-size:12px;">Schreib etwas — dann analysiere ich es für dich.</span>'}</div>
+        <div class="ai-actions">
+          <button class="ai-btn ai-btn-suggest" onclick="requestAISuggestion()">✨ Beispiel zeigen</button>
+          <button class="ai-btn ai-btn-fix" onclick="requestAISpell()">✏ Rechtschreibung prüfen</button>
+          <button class="ai-btn ai-btn-freeze" onclick="requestAIFreezeHelp()">💬 Ich stecke fest</button>
+        </div>
+        <div class="ai-suggestion" id="ai-suggestion-wrap" style="display:none;">
+          <div class="ai-sug-label">Vorschlag zur Inspiration</div>
+          <div class="ai-sug-text" id="ai-suggestion-text"></div>
+          <div class="ai-sug-actions">
+            <button class="ai-sug-use" onclick="useSuggestion()">Übernehmen</button>
+            <button class="ai-sug-discard" onclick="discardSuggestion()">Verwerfen</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+
+  // Spell check
+  let spellHTML = ""; // Handled by AI coach
+  if(false && showSpell && spellResult){
+    const ok = spellResult.fixes.length===0&&spellResult.floskeln.length===0;
+    spellHTML = `<div class="tipp-panel">
+      ${ok?`<div class="tipp-ok">✓ Alles gut! Keine Probleme gefunden.</div>`:""}
+      ${spellResult.fixes.length>0?`
+        <div style="font-weight:700;font-size:11px;color:var(--muted);margin-bottom:6px;">Rechtschreibung:</div>
+        ${spellResult.fixes.map((f,i)=>`
+          <span class="tipp-fix" onclick="applyFix(${i})">
+            <span style="text-decoration:line-through;margin-right:3px">${f.wrong}</span>
+            <span style="color:var(--s)">${f.right}</span>
+            <span style="font-size:9px;color:var(--muted)">(klick)</span>
+          </span>`).join("")}`:""}
+      ${spellResult.floskeln.length>0?`
+        <div style="font-weight:700;font-size:11px;color:var(--muted);margin:8px 0 6px;">Floskeln:</div>
+        ${spellResult.floskeln.map(f=>`
+          <div class="tipp-floskel">
+            <div class="tipp-floskel-msg">⚠ ${f.msg}</div>
+            <div class="tipp-floskel-fix">→ ${f.fix}</div>
+          </div>`).join("")}`:""}
+    </div>`;
+  }
+
+  const canNext = answer.trim().length>0;
+
+  return `
+  <div style="height:16px"></div>
+  <div class="progress-wrap">
+    <div class="progress-steps">
+      ${STEPS.map((st,i)=>`<div class="pstep ${i<state.step?'done':''} ${i===state.step?'now':''}" style="${i===state.step?`background:${st.hex};`:i<state.step?'background:var(--s)':''}" ></div>`).join("")}
+    </div>
+    <div class="progress-labels">
+      ${STEPS.map((st,i)=>`<div class="plabel ${i===state.step?'now':''}" style="${i===state.step?`color:${st.hex}`:''}"><b>${st.key}</b></div>`).join("")}
+    </div>
+  </div>
+  <div class="card">
+    <div class="step-hdr">
+      <div class="step-badge" style="background:${s.light};">
+        <span class="sb-letter" style="color:${s.hex}">${s.key}</span>
+        <span class="sb-num">${state.step+1}/5</span>
+      </div>
+      <div class="step-info">
+        <h2>${s.full} — ${s.de}</h2>
+        <p>${s.desc}</p>
+      </div>
+    </div>
+
+    <div class="ibox" style="border-color:${s.hex}40;color:${s.hex};">
+      <div class="ibox-head">Warum das wichtig ist</div>
+      <div class="ibox-body">${s.why}</div>
+    </div>
+
+    <div class="compare">
+      <div class="cmp cmp-bad"><div class="cmp-label">So nicht</div>${s.bad}</div>
+      <div class="cmp cmp-good"><div class="cmp-label">So viel besser</div>${s.good}</div>
+    </div>
+
+    ${ivHTML}
+    ${gerustHTML}
+
+    <div class="sparks-wrap">
+      <div class="sparks-label">Impulse</div>
+      <div class="sparks">
+        ${s.sparks.map(sp=>`<div class="spark ${answer.includes(sp)?'used':''}" onclick="appendSpark('${sp.replace(/'/g,"\\'")}')">
+          ${sp}
+        </div>`).join("")}
+      </div>
+    </div>
+
+    <div class="field-label">Dein Text: <small style="color:var(--muted);font-weight:400;">Schreib in deinen eigenen Worten</small></div>
+    <textarea id="main-ta" placeholder="${s.placeholder}" rows="5"
+      style="--step-c:${s.hex};" oninput="onTextChange(this.value)" onkeydown="resetFreeze()">${answer}</textarea>
+
+    ${chipsHTML}
+    ${coachHTML}
+
+    <!-- spell moved into AI coach -->
+    ${spellHTML}
+
+    <div class="btn-row">
+      <button class="btn btn-back" onclick="goBack()">← Zurück</button>
+      <button class="btn btn-next" id="btn-next" 
+        style="background:${canNext?`linear-gradient(135deg,${s.hex},${s.hex}cc)`:''};"
+        ${!canNext?'disabled':''} onclick="goNext()">
+        ${state.step===4?"Brief anzeigen →":"Weiter →"}
+      </button>
+    </div>
+  </div>`;
+}
+
+function renderResult(){
+  const {name,beruf,betrieb,ort} = state.data;
+  const {S,T,A,R,K} = state.answers;
+  const today = new Date().toLocaleDateString("de-CH",{day:"numeric",month:"long",year:"numeric"});
+  const plain = `${name}\n${ort}\n\n${today}\n\nBewerbung als ${beruf}\n\nSehr geehrte Damen und Herren\n\n${S}\n\n${T}\n\n${A}\n\n${R}\n\n${K}\n\nFreundliche Grüsse\n${name}`;
+
+  return `
+  <div style="height:20px"></div>
+  <div class="card">
+    <div style="text-align:center;margin-bottom:16px;">
+      <div style="font-size:11px;font-weight:700;color:var(--s);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;">✦ Dein Brief ist fertig!</div>
+      <div style="font-size:13px;color:var(--muted);">Überprüfe alles — dann drucken oder kopieren.</div>
+    </div>
+    <div class="colorbar">
+      ${["#00c9a7","#4f9eff","#f5b942","#ff7c45","#ff4f6a"].map(c=>`<div class="cb-seg" style="background:${c}"></div>`).join("")}
+    </div>
+    <div class="letter-wrap">
+      <div class="letter-meta">
+        <div style="font-weight:700;">${name}</div>
+        <div>${ort}</div>
+        <div style="margin-top:10px;">${today}</div>
+        <div style="margin-top:4px;">${betrieb}</div>
+      </div>
+      <div class="letter-subject">Bewerbung als ${beruf}</div>
+      <div class="letter-body">
+        <p>Sehr geehrte Damen und Herren</p>
+        <p>${S} <span class="seg-tag tag-s">S</span></p>
+        <p>${T} <span class="seg-tag tag-t">T</span></p>
+        <p>${A} <span class="seg-tag tag-a">A</span></p>
+        <p>${R} <span class="seg-tag tag-r">R</span></p>
+        <p>${K} <span class="seg-tag tag-k">K</span></p>
+      </div>
+      <div class="letter-close">Freundliche Grüsse</div>
+      <div class="letter-sig"><div class="sig">${name}</div></div>
+    </div>
+    <div class="result-actions">
+      <button class="act act-print" onclick="window.print()">🖨 Drucken / PDF</button>
+      <button class="act act-copy" id="btn-copy" onclick="copyText()">📋 Text kopieren</button>
+      <button class="act act-back2" onclick="goBackToStep()">← Bearbeiten</button>
+    </div>
+  </div>`;
+}
+
+// ═══════════════════════════════════════
+// EVENTS
+// ═══════════════════════════════════════
+function attachEvents(){
+  // Input listeners for intro
+  ["name","ort","beruf","betrieb"].forEach(k=>{
+    const el=document.getElementById(`inp-${k}`);
+    if(el) el.addEventListener("input",e=>{
+      state.data[k]=e.target.value;
+      // Update button
+      const btn=document.getElementById("btn-start");
+      const can=state.data.name&&state.data.beruf&&state.data.betrieb&&state.data.ort;
+      if(btn){btn.disabled=!can;btn.style.opacity=can?"1":"0.25";}
+    });
+  });
+}
+
+function setIV(stepKey, field, val){
+  if(!state.interviews[stepKey]) state.interviews[stepKey]={};
+  state.interviews[stepKey][field]=val;
+  const s = STEPS.find(st=>st.key===stepKey);
+  if(!s) return;
+
+  // Update option button styles in-place (no re-render)
+  const q = s.interview ? s.interview.find(q=>q.id===field) : null;
+  if(q && q.options){
+    document.querySelectorAll('.iq-opt').forEach(btn=>{
+      const txt = btn.textContent.trim();
+      if(q.options.includes(txt)){
+        const selected = txt===val;
+        btn.classList.toggle('selected', selected);
+        btn.style.borderColor = selected ? s.hex : '';
+        btn.style.background  = selected ? s.light : '';
+        btn.style.color       = selected ? s.hex : '';
+      }
+    });
+  }
+
+  // Update Satzgerüst in-place
+  const iv = state.interviews[stepKey]||{};
+  const gerustText = document.querySelector('.gerust-text');
+  if(gerustText){
+    gerustText.innerHTML = s.gerustFn(iv);
+  } else if(Object.keys(iv).length > 0){
+    // First time: inject the Gerüst block after .interview
+    const ivEl = document.querySelector('.interview');
+    if(ivEl && !document.querySelector('.gerust')){
+      const div = document.createElement('div');
+      div.className = 'gerust';
+      div.style.cssText = 'background:rgba(255,255,255,0.02);border-radius:14px;padding:16px 18px;border:1px solid var(--cb);margin-bottom:16px;';
+      div.innerHTML = '<div class="gerust-title" style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--pu);margin-bottom:10px;">⟡ Dein Satzgerüst</div>'
+                    + '<div class="gerust-text" style="font-size:13.5px;line-height:1.9;color:var(--text);">' + s.gerustFn(iv) + '</div>';
+      ivEl.insertAdjacentElement('afterend', div);
+    }
+  }
+}
+
+function onTextChange(val){
+  const s=STEPS[state.step];
+  state.answers[s.key]=val;
+  resetFreeze();
+  // Delayed re-render for quality meter
+  clearTimeout(window._renderTimer);
+  window._renderTimer = setTimeout(()=>{
+    // Update chips without full re-render
+    const s2=STEPS[state.step];
+    const {score,chips}=s2.check(val);
+    const barColor = score>=80?"var(--s)":score>=50?"var(--a)":"var(--k)";
+    const qm=document.querySelector(".qmeter");
+    if(qm && val.length>5){
+      const fill=qm.querySelector(".qm-fill");
+      const pct=qm.querySelector(".qm-pct");
+      if(fill){fill.style.width=score+"%";fill.style.background=barColor;}
+      if(pct){pct.textContent=score+"%";pct.style.color=barColor;}
+    }
+    // Update button
+    const btn=document.getElementById("btn-next");
+    if(btn){
+      btn.disabled=!val.trim();
+      btn.style.background=val.trim()?`linear-gradient(135deg,${s2.hex},${s2.hex}cc)`:"";
+      btn.style.opacity=val.trim()?"1":"0.2";
+    }
+    // Save to dashboard
+    saveToDash();
+    // Trigger AI feedback after pause
+    triggerAIFeedback();
+    // Inject qmeter if it doesn't exist yet
+    if(val.length>5 && !document.querySelector('.qmeter')){
+      const ta=document.getElementById('main-ta');
+      if(ta && ta.parentNode){
+        const s3=STEPS[state.step];
+        const {score:sc,chips:ch}=s3.check(val);
+        const bc=sc>=80?'var(--s)':sc>=50?'var(--a)':'var(--k)';
+        const qDiv=document.createElement('div');
+        qDiv.className='qmeter';
+        qDiv.innerHTML=`<div class="qm-bar-wrap"><div class="qm-track"><div class="qm-fill" style="width:${sc}%;background:${bc};"></div></div><div class="qm-pct" style="color:${bc}">${sc}%</div></div><div class="qm-chips">${ch.map(c=>`<div class="qm-chip ${c.hit?'hit':'miss'}" style="border-color:${c.hit?s3.hex:'rgba(255,255,255,0.12)'};color:${c.hit?s3.hex:'var(--muted)'}">${c.hit?'✓':'○'} ${c.label}</div>`).join('')}</div>`;
+        ta.insertAdjacentElement('afterend', qDiv);
+      }
+    } else if(val.length>5){
+      // Update existing chips
+      const s3=STEPS[state.step];
+      const {score:sc,chips:ch}=s3.check(val);
+      const bc=sc>=80?'var(--s)':sc>=50?'var(--a)':'var(--k)';
+      const chipEls=document.querySelectorAll('.qm-chip');
+      ch.forEach((c,i)=>{
+        if(chipEls[i]){
+          chipEls[i].className=`qm-chip ${c.hit?'hit':'miss'}`;
+          chipEls[i].style.borderColor=c.hit?s3.hex:'rgba(255,255,255,0.12)';
+          chipEls[i].style.color=c.hit?s3.hex:'var(--muted)';
+          chipEls[i].textContent=`${c.hit?'✓':'○'} ${c.label}`;
+        }
+      });
+    }
+  }, 300);
+}
+
+function appendSpark(sp){
+  const s=STEPS[state.step];
+  const cur=state.answers[s.key]||"";
+  const newVal=cur?(cur+(cur.endsWith(" ")?"":"\n")+sp):sp;
+  state.answers[s.key]=newVal;
+  // Update textarea directly — no full re-render
+  const ta=document.getElementById("main-ta");
+  if(ta){
+    ta.value=newVal;
+    ta.focus();
+    // Mark spark as used
+    document.querySelectorAll('.spark').forEach(el=>{
+      if(el.textContent.trim()===sp.trim()) el.classList.add('used');
+    });
+    onTextChange(newVal);
+  }
+}
+
+function applyHint(){
+  const s=STEPS[state.step];
+  // Flash coach tip
+  const coach=document.querySelector(".coach-q");
+  if(coach){
+    coach.innerHTML=`<strong>Tipp:</strong> ${s.coachHint}`;
+    coach.style.color="rgba(232,237,245,0.9)";
+  }
+}
+
+function applyFix(idx){
+  const s=STEPS[state.step];
+  const text=state.answers[s.key]||"";
+  const {fixes}=checkText(text);
+  if(fixes[idx]&&fixes[idx].type==="spell"){
+    const newVal=text.replace(fixes[idx].wrong,fixes[idx].right);
+    state.answers[s.key]=newVal;
+    const ta=document.getElementById("main-ta");
+    if(ta) ta.value=newVal;
+    // Re-render only the spell panel
+    toggleSpell(); toggleSpell();
+  }
+}
+
+function toggleSpell(){
+  state.showSpell = state.showSpell===state.step ? null : state.step;
+  // Only update the spell section, preserve scroll
+  const scrollY = window.scrollY;
+  render();
+  window.scrollTo(0, scrollY);
+}
+
+function startSteps(){
+  state.screen="step";
+  state.step=0;
+  resetFreeze();
+  render();
+}
+
+function goNext(){
+  if(state.step<4){ state.step++; state.showSpell=null; render(); window.scrollTo(0,0); }
+  else { state.screen="result"; render(); window.scrollTo(0,0); }
+}
+function goBack(){
+  if(state.step>0){state.step--;state.showSpell=null;render();window.scrollTo(0,0);}
+  else{state.screen="intro";render();}
+}
+function goBackToStep(){state.screen="step";state.step=4;render();window.scrollTo(0,0);}
+
+function copyText(){
+  const {name,beruf,betrieb,ort}=state.data;
+  const {S,T,A,R,K}=state.answers;
+  const today=new Date().toLocaleDateString("de-CH",{day:"numeric",month:"long",year:"numeric"});
+  const plain=`${name}\n${ort}\n\n${today}\n\nBewerbung als ${beruf}\n\nSehr geehrte Damen und Herren\n\n${S}\n\n${T}\n\n${A}\n\n${R}\n\n${K}\n\nFreundliche Grüsse\n${name}`;
+  navigator.clipboard.writeText(plain);
+  const btn=document.getElementById("btn-copy");
+  if(btn){btn.textContent="✓ Kopiert!";setTimeout(()=>{if(btn)btn.textContent="📋 Text kopieren";},2500);}
+}
+
+function updateProgress(){}
+
+// ═══════════════════════════════════════
+// DASHBOARD
+// ═══════════════════════════════════════
+
+// Simulated class data
+const DEMO_PUPILS = [
+  {id:1,name:"Mikael B.",beruf:"Heizungsinstallateur",step:2,answers:{S:"Als ich letzten Sommer auf der Baustelle stand...",T:"Beim Strassenbauer habe ich gelernt was Präzision bedeutet.",A:"",R:"",K:""},lastActive:8,stuckAt:"A",status:"stuck"},
+  {id:2,name:"Simone M.",beruf:"AGS",step:1,answers:{S:"Ich war schnuppern beim Alterszentrum...",T:"",R:"",A:"",K:""},lastActive:3,stuckAt:"T",status:"stuck"},
+  {id:3,name:"Leila K.",beruf:"Kauffrau EFZ",step:4,answers:{S:"Seit ich meiner Mutter bei der Buchhaltung geholfen habe...",T:"Im Schulprojekt habe ich die Finanzen übernommen...",A:"Zahlen faszinieren mich seit ich klein bin.",R:"Auf Ihrer Website habe ich gesehen..."},lastActive:1,stuckAt:null,status:"ok"},
+  {id:4,name:"Noah F.",beruf:"Polymechaniker",step:0,answers:{S:"",T:"",A:"",R:"",K:""},lastActive:12,stuckAt:"S",status:"stuck"},
+  {id:5,name:"Amira S.",beruf:"Coiffeuse EFZ",step:3,answers:{S:"Als ich meiner Schwester die Haare gemacht habe...",T:"Ich bin geduldig und kreativ — beim Wettbewerb...",A:"Schönheit bedeutet für mich Selbstbewusstsein..."},lastActive:2,stuckAt:null,status:"alert"},
+  {id:6,name:"Jonas W.",beruf:"Elektriker EFZ",step:5,answers:{S:"Mit 10 habe ich die Lampe selbst angeschlossen...",T:"In der Schule bin ich oft der der erklärt wie es geht...",A:"Elektrizität fasziniert mich — sie ist unsichtbar aber alles...",R:"Ihr Betrieb in Muttenz hat mich bei der Schnupperlehre...",K:"Ich bin bereit — geben Sie mir die Chance."},lastActive:0,stuckAt:null,status:"done"},
+];
+
+function saveToDash(){
+  // Update or add current pupil to dash
+  const {name,beruf}=state.data;
+  if(!name||!beruf) return;
+  const existing=state.pupils.find(p=>p.name===name);
+  const score = Object.values(state.answers).filter(a=>a&&a.trim()).length;
+  if(existing){
+    existing.step=state.screen==="result"?5:state.step;
+    existing.answers={...state.answers};
+    existing.lastActive=0;
+    existing.status=state.screen==="result"?"done":"ok";
+  } else {
+    state.pupils.push({
+      id:Date.now(),name,beruf,
+      step:state.screen==="result"?5:state.step,
+      answers:{...state.answers},
+      lastActive:0,stuckAt:null,status:"ok"
+    });
+  }
+}
+
+function renderDash(){
+  const dash=document.getElementById("dash-app");
+  if(!dash) return;
+  const allPupils=[...state.pupils,...(demoLoaded?DEMO_PUPILS:[])];
+  const stuckPupils=allPupils.filter(p=>p.status==="stuck"||p.lastActive>5);
+  dash.innerHTML=`
+  <div style="height:20px"></div>
+  <div class="dash-card card">
+    <div class="dash-hdr">
+      <div>
+        <div class="dash-title">Lehrperson-Dashboard</div>
+        <div class="dash-sub">${allPupils.length} Schüler:innen — Echtzeit-Übersicht</div>
+      </div>
+      <div class="dash-actions">
+        <button class="dash-btn ${demoLoaded?'active':''}" onclick="toggleDemo()">
+          ${demoLoaded?'Demo ausblenden':'Demo-Klasse laden'}
+        </button>
+      </div>
+    </div>
+    <div class="api-setup">
+      <div class="api-setup-title">⚙ KI-Coach API-Key</div>
+      <div class="api-setup-row">
+        <input type="password" class="api-input api-key-input-field" id="api-key-input"
+          placeholder="sk-ant-api03-..."
+          value="${apiKey ? 'sk-ant-...'+apiKey.slice(-4) : ''}">
+        <button class="api-save" onclick="saveApiKey()">Speichern</button>
+      </div>
+      <div class="api-status api-status-msg ${apiKey?'api-ok':''}">
+        ${apiKey ? '✓ Key aktiv — KI-Coach läuft für alle SuS' : 'Kein Key — KI-Coach deaktiviert'}
+      </div>
+    </div>
+
+    ${stuckPupils.length>0?`
+    <div class="ibox" style="border-color:rgba(245,185,66,0.3);color:var(--a);margin-bottom:16px;">
+      <div class="ibox-head">Aufmerksamkeit nötig (${stuckPupils.length})</div>
+      <div class="ibox-body">
+        ${stuckPupils.map(p=>`<strong>${p.name}</strong> (${p.beruf}) — hängt bei <strong>${p.stuckAt||STEPS[p.step]?.key||"?"}</strong> seit ${p.lastActive} Min.`).join(" · ")}
+      </div>
+    </div>`:""}
+
+    ${allPupils.length===0?`
+    <div class="dash-empty">
+      <div class="de-icon">📋</div>
+      <p>Noch keine Schüler:innen aktiv.<br>Lade die Demo-Klasse oder warte bis SuS den Schüler-Modus starten.<br><br>
+      <small style="color:var(--faint)">Tipp: SuS müssen ihren Namen eingeben — dann erscheinen sie hier.</small></p>
+    </div>`:`
+    <div class="pupil-grid">
+      ${allPupils.map(p=>`
+      <div class="pupil-card ${p.status==="stuck"||p.lastActive>5?'stuck':p.status==="done"?'':'alert'}" onclick="selectPupil(${p.id})">
+        <div class="pupil-name">${p.name}</div>
+        <div class="pupil-status">${p.beruf} · ${p.lastActive===0?"gerade aktiv":p.lastActive+"min"}</div>
+        <div class="pupil-progress">
+          ${STEPS.map((_,i)=>`<div class="pp-dot ${i<p.step?'done':i===p.step?'now':''}"></div>`).join("")}
+        </div>
+        <div class="pupil-tags">
+          ${p.status==="done"?'<span class="ptag ptag-done">Fertig ✓</span>':
+            p.status==="stuck"||p.lastActive>5?`<span class="ptag ptag-stuck">Hängt bei ${p.stuckAt||STEPS[Math.min(p.step,4)]?.key}</span>`:
+            '<span class="ptag ptag-ok">Aktiv</span>'}
+          <span class="ptag" style="background:rgba(255,255,255,0.04);border-color:var(--cb);color:var(--muted)">Schritt ${Math.min(p.step,5)}/5</span>
+        </div>
+      </div>`).join("")}
+    </div>`}
+
+    ${state.dashSelected?renderPupilDetail(allPupils.find(p=>p.id===state.dashSelected)):""}
+
+    <div class="class-code-wrap">
+      <div class="class-code-desc" style="font-size:11px;color:var(--muted);margin-bottom:4px;">Klassencode für SuS</div>
+      <div class="class-code">STARK25</div>
+      <div class="class-code-desc">SuS geben diesen Code ein um der Klasse beizutreten (Demo-Funktion)</div>
+    </div>
+  </div>`;
+}
+
+function renderPupilDetail(p){
+  if(!p) return "";
+  const stuckStep = STEPS.find(s=>s.key===p.stuckAt);
+  let hint = "";
+  if(p.stuckAt){
+    hint=`Geh kurz zu <strong>${p.name}</strong> und frag: <em>"Was hast du beim ${p.stuckAt==='S'?'Schnuppern':'dieser Frage'} erlebt?"</em> — eine konkrete Frage reicht.`;
+  } else if(p.status==="alert"){
+    hint=`<strong>${p.name}</strong> ist fast fertig — kurz vorbeischauen und ermutigen.`;
+  } else {
+    hint=`<strong>${p.name}</strong> arbeitet gut — kein Eingriff nötig.`;
+  }
+
+  return `
+  <div class="dash-detail" style="margin-top:16px;">
+    <div class="dd-head">
+      <div class="dd-name">${p.name}</div>
+      <button class="dd-close" onclick="state.dashSelected=null;renderDash()">Schliessen</button>
+    </div>
+    <div class="dd-steps">
+      ${STEPS.map((s,i)=>{
+        const txt=p.answers[s.key]||"";
+        const done=i<p.step||(p.status==="done");
+        const {score}=s.check(txt);
+        const barCol=score>=80?"var(--s)":score>=50?"var(--a)":"var(--k)";
+        return `<div class="dd-step">
+          <div class="dd-step-letter" style="color:${s.hex}">${s.key}</div>
+          <div class="dd-step-info">
+            <div class="dd-step-name">${s.full}</div>
+            <div class="dd-step-text">${txt||"(noch leer)"}</div>
+          </div>
+          <div>
+            <div class="dd-step-bar">
+              <div class="dd-step-fill" style="width:${done?score:0}%;background:${barCol}"></div>
+            </div>
+          </div>
+        </div>`;
+      }).join("")}
+    </div>
+    <div class="dd-hint">💡 <strong>Empfehlung:</strong> ${hint}</div>
+  </div>`;
+}
+
+function selectPupil(id){
+  state.dashSelected = state.dashSelected===id ? null : id;
+  renderDash();
+}
+
+function toggleDemo(){
+  demoLoaded=!demoLoaded;
+  renderDash();
+}
+
+function switchMode(mode){
+  document.getElementById("tab-schueler").classList.toggle("active",mode==="schueler");
+  document.getElementById("tab-lp").classList.toggle("active",mode==="lehrperson");
+  document.getElementById("schueler-view").style.display=mode==="schueler"?"block":"none";
+  document.getElementById("lehrperson-view").style.display=mode==="lehrperson"?"block":"none";
+  if(mode==="lehrperson") renderDash();
+}
+
+// ═══════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════
+render();
+freezeTimer = setTimeout(checkFreeze, 45000);
+
+// ═══════════════════════════════════════
+// AI ENGINE
+// ═══════════════════════════════════════
+let apiKey = localStorage.getItem('stark_api_key') || '';
+let aiState = {
+  thinking: false,
+  lastFeedback: '',
+  lastSuggestion: '',
+  feedbackTimer: null,
+  freezeAsked: false,
+};
+
+// ── Save/Load key ──
+function saveApiKey(){
+  const k = document.getElementById('api-key-input');
+  if(!k) return;
+  const val = k.value.trim();
+  if(!val.startsWith('sk-ant-')){
+    showApiStatus('Kein gültiger Anthropic API-Key (muss mit sk-ant- beginnen)', false);
+    return;
+  }
+  apiKey = val;
+  localStorage.setItem('stark_api_key', val);
+  showApiStatus('✓ Key gespeichert & aktiv', true);
+  // Update all key inputs
+  document.querySelectorAll('.api-key-input-field').forEach(el=>{ el.value='sk-ant-...'+val.slice(-4); });
+}
+function showApiStatus(msg, ok){
+  document.querySelectorAll('.api-status-msg').forEach(el=>{
+    el.textContent = msg;
+    el.className = 'api-status ' + (ok ? 'api-ok' : 'api-err');
+  });
+}
+
+// ── Core API call with streaming ──
+async function callAI(systemPrompt, userMsg, onChunk, onDone){
+  if(!apiKey){ onDone('(Kein API-Key — im Lehrperson-Modus eingeben)'); return; }
+  aiState.thinking = true;
+  updateAIStatus(true);
+  let full = '';
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version':'2023-06-01'
+      },
+      body: JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:400,
+        system: systemPrompt,
+        messages:[{role:'user',content:userMsg}]
+      })
+    });
+    if(!res.ok){
+      const err = await res.json().catch(()=>({}));
+      throw new Error(err?.error?.message || 'API-Fehler '+res.status);
+    }
+    const data = await res.json();
+    full = data.content?.map(b=>b.text||'').join('') || '';
+    onChunk(full);
+  } catch(e){
+    full = '⚠ ' + (e.message||'Verbindungsfehler');
+    onChunk(full);
+  }
+  aiState.thinking = false;
+  updateAIStatus(false);
+  onDone(full);
+}
+
+function updateAIStatus(thinking){
+  document.querySelectorAll('.ai-dot').forEach(d=>{
+    d.classList.toggle('thinking', thinking);
+  });
+  document.querySelectorAll('.ai-coach-status span:last-child').forEach(el=>{
+    if(el.classList.contains('ai-dot')) return;
+    el.textContent = thinking ? 'denkt…' : 'bereit';
+  });
+}
+
+// ── Build system prompt for current step ──
+function buildSystemPrompt(stepKey, beruf, betrieb){
+  const stepNames = {S:'Story (persönliche Geschichte)',T:'Talente (Stärken mit Beweisen)',A:'Antrieb (Motivation)',R:'Resonanz (Warum dieser Betrieb)',K:'Klartext (Starker Schluss)'};
+  return `Du bist ein einfühlsamer Bewerbungs-Coach für Jugendliche (13-16 Jahre) in einer Kleinklasse. Viele haben ADHS oder ASS.
+Aktueller Schritt: ${stepNames[stepKey] || stepKey}
+Lehrberuf: ${beruf || 'unbekannt'}
+Betrieb: ${betrieb || 'unbekannt'}
+
+Deine Regeln:
+- Antworte IMMER auf Deutsch, kurz und einfach (max. 3 Sätze)
+- Sei warm, ermutigend, nie kritisch oder überwältigend
+- Stelle NUR EINE Frage am Ende, nie mehrere
+- Nutze einfache Sprache (Niveau 8. Klasse)
+- Wenn du Feedback gibst: erst das Positive, dann ONE Verbesserung
+- Kein Konjunktiv in deinen Vorschlägen
+- Floskeln wie "hiermit bewerbe" oder "motiviert und teamfähig" aktiv ansprechen
+- Format: Nur Fliesstext, keine Listen, keine Emojis ausser am Anfang`;
+}
+
+// ── FEEDBACK after typing pause ──
+function triggerAIFeedback(){
+  const s = STEPS[state.step];
+  const text = state.answers[s.key] || '';
+  if(!text || text.length < 20) return;
+  clearTimeout(aiState.feedbackTimer);
+  aiState.feedbackTimer = setTimeout(()=> doAIFeedback(s, text), 1800);
+}
+
+function doAIFeedback(s, text){
+  const feedbackEl = document.getElementById('ai-feedback-text');
+  if(!feedbackEl) return;
+  const sys = buildSystemPrompt(s.key, state.data.beruf, state.data.betrieb);
+  const msg = `Der Schüler/die Schülerin hat für den Abschnitt "${s.full} — ${s.de}" folgendes geschrieben:\n\n"${text}"\n\nGib kurzes, ermutigendes Feedback: Was ist gut? Was fehlt noch? Stelle am Ende EINE konkrete Frage.`;
+  feedbackEl.innerHTML = '<span class="ai-cursor"></span>';
+  callAI(sys, msg,
+    (partial) => { feedbackEl.innerHTML = partial + '<span class="ai-cursor"></span>'; },
+    (final)   => { feedbackEl.innerHTML = final; aiState.lastFeedback = final; }
+  );
+}
+
+// ── SUGGESTION on demand ──
+function requestAISuggestion(){
+  const s = STEPS[state.step];
+  const text = state.answers[s.key] || '';
+  const iv = state.interviews[s.key] || {};
+  const sugEl = document.getElementById('ai-suggestion-wrap');
+  const sugText = document.getElementById('ai-suggestion-text');
+  if(!sugEl || !sugText) return;
+  sugEl.style.display = 'block';
+  sugText.innerHTML = '<span class="ai-cursor"></span>';
+  const sys = buildSystemPrompt(s.key, state.data.beruf, state.data.betrieb);
+  const context = Object.entries(iv).map(([k,v])=>`${k}: ${v}`).join(', ');
+  const msg = `Schreibe einen konkreten Beispiel-Satz (2-3 Sätze) für den Abschnitt "${s.full}".
+Kontext aus den Antworten des Schülers: ${context || 'keine'}
+Bisheriger Text: "${text || 'noch nichts'}"
+Schreib einen Vorschlag der als Inspiration dient — authentisch, persönlich, keine Floskeln. Nur den Vorschlag, keine Einleitung.`;
+  callAI(sys, msg,
+    (partial) => { sugText.innerHTML = partial + '<span class="ai-cursor"></span>'; },
+    (final)   => { sugText.innerHTML = final; aiState.lastSuggestion = final; }
+  );
+}
+
+function useSuggestion(){
+  const text = aiState.lastSuggestion;
+  if(!text) return;
+  const s = STEPS[state.step];
+  const cur = state.answers[s.key] || '';
+  const newVal = cur ? cur + '\n' + text : text;
+  state.answers[s.key] = newVal;
+  const ta = document.getElementById('main-ta');
+  if(ta){ ta.value = newVal; onTextChange(newVal); }
+  const wrap = document.getElementById('ai-suggestion-wrap');
+  if(wrap) wrap.style.display = 'none';
+}
+function discardSuggestion(){
+  const wrap = document.getElementById('ai-suggestion-wrap');
+  if(wrap) wrap.style.display = 'none';
+}
+
+// ── SPELL+GRAMMAR via AI ──
+function requestAISpell(){
+  const s = STEPS[state.step];
+  const text = state.answers[s.key] || '';
+  if(!text || text.length < 10) return;
+  const feedbackEl = document.getElementById('ai-feedback-text');
+  if(!feedbackEl) return;
+  const sys = buildSystemPrompt(s.key, state.data.beruf, state.data.betrieb);
+  const msg = `Prüfe diesen Text auf Rechtschreibung, Grammatik und Floskeln:\n\n"${text}"\n\nGib eine kurze Liste der Fehler mit Korrektur. Wenn alles gut ist, sage das kurz. Format: Fehler → Korrektur (eine pro Zeile, max 4).`;
+  feedbackEl.innerHTML = '<span class="ai-cursor"></span>';
+  callAI(sys, msg,
+    (partial) => { feedbackEl.innerHTML = partial + '<span class="ai-cursor"></span>'; },
+    (final)   => { feedbackEl.innerHTML = final; }
+  );
+}
+
+// ── FREEZE question via AI ──
+function requestAIFreezeHelp(){
+  if(aiState.freezeAsked) return;
+  aiState.freezeAsked = true;
+  const s = STEPS[state.step];
+  const text = state.answers[s.key] || '';
+  const iv = state.interviews[s.key] || {};
+  const feedbackEl = document.getElementById('ai-feedback-text');
+  if(!feedbackEl) return;
+  dismissFreeze();
+  // Scroll to coach
+  const coachEl = document.querySelector('.ai-coach-wrap');
+  if(coachEl) coachEl.scrollIntoView({behavior:'smooth', block:'center'});
+  const sys = buildSystemPrompt(s.key, state.data.beruf, state.data.betrieb);
+  const context = Object.entries(iv).map(([k,v])=>`${k}: ${v}`).join(', ');
+  const msg = `Der Schüler/die Schülerin steckt fest bei "${s.full}". 
+Bisheriger Text: "${text || 'nichts geschrieben'}"
+Kontext: ${context || 'keine Antworten'}
+Stelle eine einzige, sehr einfache und konkrete Frage die ihm/ihr hilft anzufangen. Keine Erklärung, nur die Frage.`;
+  feedbackEl.innerHTML = '🤔 <span class="ai-cursor"></span>';
+  callAI(sys, msg,
+    (partial) => { feedbackEl.innerHTML = '🤔 ' + partial + '<span class="ai-cursor"></span>'; },
+    (final)   => { feedbackEl.innerHTML = '🤔 ' + final; aiState.freezeAsked = false; }
+  );
+}
+
+// ── Hook into freeze detection ──
+const _origCheckFreeze = checkFreeze;
+checkFreeze = function(){
+  if(Date.now()-lastTyped > 44000 && !freezeShown && state.screen==="step"){
+    freezeShown=true;
+    const freeze = document.getElementById("freeze-hint");
+    if(freeze){
+      freeze.style.display="flex";
+      document.getElementById("freeze-msg").textContent = "Feststecken? Die KI stellt dir eine Frage!";
+    }
+    // Auto-trigger AI question
+    setTimeout(requestAIFreezeHelp, 500);
+  }
+};
+
+</script>
+</body>
+</html>
