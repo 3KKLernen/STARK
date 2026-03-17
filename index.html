@@ -220,17 +220,32 @@ textarea::placeholder{color:var(--faint);}
 .btn-next:disabled{opacity:0.2;cursor:not-allowed;}
 
 /* ── BRIEF (Ergebnis) ── */
-.letter-wrap{background:#f8f9ff;border-radius:18px;padding:44px 40px;
-  margin-top:16px;color:#1a2035;
+.letter-wrap{background:#fff;border-radius:18px;padding:52px 50px;
+  margin-top:16px;color:#1a2035;position:relative;overflow:hidden;
   box-shadow:0 24px 80px rgba(0,0,0,0.6);}
-.letter-meta{font-size:11.5px;color:#555;line-height:1.9;margin-bottom:24px;
-  padding-bottom:18px;border-bottom:1px solid #e4e6ef;}
+.letter-wrap::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:linear-gradient(90deg,#00c9a7,#4f9eff,#f5b942,#ff7c45,#ff4f6a);}
+.letter-sender{font-size:12px;line-height:1.8;color:#333;margin-bottom:28px;}
+.letter-sender strong{font-size:13px;font-weight:700;color:#0d1525;}
+.letter-recipient{font-size:12px;line-height:1.8;color:#333;margin-bottom:6px;}
+.letter-date{font-size:12px;color:#555;margin-bottom:22px;text-align:right;}
 .letter-subject{font-family:'Fraunces',serif;font-size:17px;font-weight:700;
-  color:#0d1525;margin-bottom:24px;}
+  color:#0d1525;margin-bottom:24px;padding-bottom:10px;border-bottom:2.5px solid #0d1525;}
 .letter-body p{font-size:13px;line-height:1.9;color:#2a3450;margin-bottom:14px;}
-.letter-close{margin-top:24px;font-size:13px;color:#2a3450;}
-.letter-sig{margin-top:16px;padding-top:14px;border-top:1px solid #e4e6ef;}
-.letter-sig .sig{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:#0d1525;margin-top:6px;}
+.letter-close{margin-top:28px;font-size:13px;color:#2a3450;}
+.letter-sig{margin-top:40px;}
+.letter-sig .sig{font-family:'Fraunces',serif;font-size:18px;font-weight:700;color:#0d1525;}
+.letter-beilagen{margin-top:24px;padding-top:14px;border-top:1px solid #e4e6ef;font-size:11px;color:#777;}
+/* ── Bewerbungsart Pill Selector ── */
+.art-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+.art-pill{padding:8px 16px;border-radius:100px;font-size:12px;font-weight:600;
+  border:1.5px solid var(--cb);background:transparent;color:var(--muted);
+  cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
+.art-pill.active{border-color:var(--a);color:var(--a);background:var(--al);}
+.art-pill:hover:not(.active){border-color:rgba(255,255,255,0.2);color:var(--text);}
+.form-section{margin-bottom:18px;}
+.form-section-title{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--muted);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--cb);}
 .seg-tag{display:inline-flex;align-items:center;font-size:7.5px;font-weight:700;
   letter-spacing:0.5px;padding:2px 6px;border-radius:4px;margin-left:4px;
   vertical-align:middle;text-transform:uppercase;}
@@ -379,13 +394,21 @@ input::placeholder{color:var(--faint);}
   .sparks-wrap,.qmeter,.coach,.spell-toggle,.tipp-panel,.interview,.gerust,
   .final-wrap,.coach-input-row,.coach-chat,
   .progress-wrap,.step-hdr,.intro-features,.method-pills,
-  .colorbar,.freeze-hint{display:none!important;}
+  .colorbar,.freeze-hint,.letter-beilagen-noprint{display:none!important;}
   .container{max-width:100%!important;padding:0!important;}
   .card{background:transparent!important;border:none!important;box-shadow:none!important;padding:0!important;}
-  .letter-wrap{background:#fff!important;box-shadow:none!important;border:none!important;padding:0!important;}
+  .letter-wrap{background:#fff!important;box-shadow:none!important;border:none!important;padding:0!important;border-radius:0!important;}
+  .letter-wrap::before{display:none!important;}
   .letter-wrap *{color:#000!important;}
-  .letter-subject{font-size:13pt!important;}
+  .letter-sender{font-size:11pt!important;line-height:1.6!important;margin-bottom:30pt!important;}
+  .letter-recipient{font-size:11pt!important;line-height:1.6!important;margin-bottom:8pt!important;}
+  .letter-date{font-size:11pt!important;margin-bottom:16pt!important;}
+  .letter-subject{font-size:13pt!important;border-bottom:2px solid #000!important;padding-bottom:6pt!important;margin-bottom:16pt!important;}
   .letter-body p{font-size:11pt!important;line-height:1.75!important;}
+  .letter-close{font-size:11pt!important;margin-top:20pt!important;}
+  .letter-sig{margin-top:40pt!important;}
+  .letter-sig .sig{font-size:12pt!important;}
+  .letter-beilagen{font-size:9pt!important;margin-top:30pt!important;}
   .seg-tag{display:none!important;}
 }
 
@@ -823,7 +846,9 @@ function checkText(text){
 let state = {
   screen: "intro",  // intro | step | result
   step: 0,
-  data: {name:"",beruf:"",betrieb:"",ort:""},
+  data: {name:"",strasse:"",plz:"",ort:"",telefon:"",email:"",
+         beruf:"",betrieb:"",betriebStrasse:"",betriebPlzOrt:"",betriebWeb:"",kontakt:"",
+         bewerbungsart:"Lehrstelle EFZ"},
   answers: {S:"",T:"",A:"",R:"",K:""},
   interviews: {S:{},T:{},A:{},R:{},K:{}},
   companyResearch: null,
@@ -903,25 +928,80 @@ function renderIntro(){
     </div>
     <div style="border-top:1px solid var(--cb);padding-top:20px;margin-top:4px;">
       <div class="sparks-label">Deine Angaben</div>
-      <div class="form-grid">
-        <div class="form-field">
-          <div class="form-label">Dein Name</div>
-          <input type="text" id="inp-name" value="${state.data.name}" placeholder="Vor- und Nachname">
-        </div>
-        <div class="form-field">
-          <div class="form-label">Wohnort</div>
-          <input type="text" id="inp-ort" value="${state.data.ort}" placeholder="z.B. Basel">
-        </div>
-        <div class="form-field">
-          <div class="form-label">Lehrberuf</div>
-          <input type="text" id="inp-beruf" value="${state.data.beruf}" placeholder="z.B. Informatiker EFZ">
-        </div>
-        <div class="form-field">
-          <div class="form-label">Betrieb</div>
-          <input type="text" id="inp-betrieb" value="${state.data.betrieb}" placeholder="Name des Lehrbetriebs">
+      
+      <div class="form-section">
+        <div class="form-section-title">📍 Deine Personalien</div>
+        <div class="form-grid">
+          <div class="form-field">
+            <div class="form-label">Vor- und Nachname</div>
+            <input type="text" id="inp-name" value="${state.data.name}" placeholder="z.B. Csaba Müller">
+          </div>
+          <div class="form-field">
+            <div class="form-label">Strasse & Nr.</div>
+            <input type="text" id="inp-strasse" value="${state.data.strasse}" placeholder="z.B. Hauptstrasse 12">
+          </div>
+          <div class="form-field">
+            <div class="form-label">PLZ</div>
+            <input type="text" id="inp-plz" value="${state.data.plz}" placeholder="z.B. 4000">
+          </div>
+          <div class="form-field">
+            <div class="form-label">Ort</div>
+            <input type="text" id="inp-ort" value="${state.data.ort}" placeholder="z.B. Basel">
+          </div>
+          <div class="form-field">
+            <div class="form-label">Telefon</div>
+            <input type="tel" id="inp-telefon" value="${state.data.telefon}" placeholder="z.B. 079 123 45 67">
+          </div>
+          <div class="form-field">
+            <div class="form-label">E-Mail</div>
+            <input type="email" id="inp-email" value="${state.data.email}" placeholder="z.B. csaba@mail.ch">
+          </div>
         </div>
       </div>
-      <div style="display:flex;justify-content:flex-end;">
+
+      <div class="form-section">
+        <div class="form-section-title">🏢 Betrieb</div>
+        <div class="form-grid">
+          <div class="form-field">
+            <div class="form-label">Firmenname</div>
+            <input type="text" id="inp-betrieb" value="${state.data.betrieb}" placeholder="z.B. Schreinerei Huber AG">
+          </div>
+          <div class="form-field">
+            <div class="form-label">Website <span style="color:var(--faint);font-weight:400;">(hilft dem Coach bei der Recherche)</span></div>
+            <input type="url" id="inp-betriebWeb" value="${state.data.betriebWeb}" placeholder="z.B. www.schreinerei-huber.ch">
+          </div>
+          <div class="form-field">
+            <div class="form-label">Kontaktperson (optional)</div>
+            <input type="text" id="inp-kontakt" value="${state.data.kontakt}" placeholder="z.B. Herr Meier">
+          </div>
+          <div class="form-field">
+            <div class="form-label">Strasse des Betriebs</div>
+            <input type="text" id="inp-betriebStrasse" value="${state.data.betriebStrasse}" placeholder="z.B. Gewerbestrasse 5">
+          </div>
+          <div class="form-field">
+            <div class="form-label">PLZ & Ort des Betriebs</div>
+            <input type="text" id="inp-betriebPlzOrt" value="${state.data.betriebPlzOrt}" placeholder="z.B. 4053 Basel">
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <div class="form-section-title">🎯 Lehrberuf & Bewerbungsart</div>
+        <div class="form-grid">
+          <div class="form-field">
+            <div class="form-label">Lehrberuf</div>
+            <input type="text" id="inp-beruf" value="${state.data.beruf}" placeholder="z.B. Schreiner">
+          </div>
+        </div>
+        <div class="form-label" style="margin-top:10px;">Ich bewerbe mich für:</div>
+        <div class="art-pills">
+          ${['Schnuppertage','Schnupperwoche','Lehrstelle EFZ','Lehrstelle EBA'].map(a=>
+            `<button class="art-pill ${state.data.bewerbungsart===a?'active':''}" onclick="setBewerbungsart('${a}')">${a}</button>`
+          ).join('')}
+        </div>
+      </div>
+
+      <div style="display:flex;justify-content:flex-end;margin-top:12px;">
         <button class="btn btn-next" id="btn-start" style="background:linear-gradient(135deg,#f5b942,#d49a28);${!canStart?'opacity:0.25;cursor:not-allowed;':''}" ${!canStart?'disabled':''} onclick="startSteps()">Los geht's →</button>
       </div>
     </div>
@@ -1009,7 +1089,7 @@ function renderStep(){
         </div>
         ${STEPS[state.step].key==='R' || state.companyResearch ? `
         <button class="research-btn" id="research-btn" onclick="researchCompany()" ${!state.data.betrieb?'disabled':''}>
-          🔍 ${state.companyResearch ? 'Firma erneut recherchieren' : 'Firma recherchieren: '+( state.data.betrieb||'(kein Betrieb angegeben)')}
+          🔍 ${state.companyResearch ? 'Firma erneut recherchieren' : 'Firma recherchieren: '+ (state.data.betrieb||'(kein Betrieb angegeben)')}${state.data.betriebWeb && !state.companyResearch ? ' ('+state.data.betriebWeb+')' : ''}
         </button>
         ${state.companyResearch ? `<div class="research-result"><div class="rr-title">🏢 Recherche: ${escHtml(state.data.betrieb)}</div>${state.companyResearch}</div>` : ''}
         ` : ''}
@@ -1120,10 +1200,27 @@ function renderStep(){
 }
 
 function renderResult(){
-  const {name,beruf,betrieb,ort} = state.data;
+  const d = state.data;
   const {S,T,A,R,K} = state.answers;
   const today = new Date().toLocaleDateString("de-CH",{day:"numeric",month:"long",year:"numeric"});
-  const plain = `${name}\n${ort}\n\n${today}\n\nBewerbung als ${beruf}\n\nSehr geehrte Damen und Herren\n\n${S}\n\n${T}\n\n${A}\n\n${R}\n\n${K}\n\nFreundliche Grüsse\n${name}`;
+  
+  // Dynamic subject based on bewerbungsart
+  const artMap = {
+    'Schnuppertage': `Bewerbung um Schnuppertage als ${d.beruf}`,
+    'Schnupperwoche': `Bewerbung um eine Schnupperwoche als ${d.beruf}`,
+    'Lehrstelle EFZ': `Bewerbung um eine Lehrstelle als ${d.beruf} EFZ`,
+    'Lehrstelle EBA': `Bewerbung um eine Lehrstelle als ${d.beruf} EBA`
+  };
+  const betreff = artMap[d.bewerbungsart] || `Bewerbung als ${d.beruf}`;
+  
+  // Anrede based on kontakt
+  const anrede = d.kontakt ? 
+    (d.kontakt.match(/^Frau/i) ? `Sehr geehrte ${d.kontakt}` : 
+     d.kontakt.match(/^Herr/i) ? `Sehr geehrter ${d.kontakt}` : 
+     `Guten Tag ${d.kontakt}`) : 
+    'Sehr geehrte Damen und Herren';
+
+  const plain = `${d.name}\n${d.strasse}\n${d.plz} ${d.ort}\n${d.telefon?d.telefon+'\n':''}${d.email?d.email+'\n':''}\n${d.betrieb}\n${d.betriebStrasse?d.betriebStrasse+'\n':''}${d.betriebPlzOrt?d.betriebPlzOrt+'\n':''}\n${d.ort}, ${today}\n\n${betreff}\n\n${anrede}\n\n${S}\n\n${T}\n\n${A}\n\n${R}\n\n${K}\n\nFreundliche Grüsse\n\n${d.name}`;
 
   return `
   <div style="height:20px"></div>
@@ -1136,15 +1233,17 @@ function renderResult(){
       ${["#00c9a7","#4f9eff","#f5b942","#ff7c45","#ff4f6a"].map(c=>`<div class="cb-seg" style="background:${c}"></div>`).join("")}
     </div>
     <div class="letter-wrap">
-      <div class="letter-meta">
-        <div style="font-weight:700;">${name}</div>
-        <div>${ort}</div>
-        <div style="margin-top:10px;">${today}</div>
-        <div style="margin-top:4px;">${betrieb}</div>
+      <div class="letter-sender">
+        <strong>${d.name}</strong><br>
+        ${d.strasse?d.strasse+'<br>':''}${d.plz?d.plz+' ':''}${d.ort}${d.telefon?'<br>'+d.telefon:''}${d.email?'<br>'+d.email:''}
       </div>
-      <div class="letter-subject">Bewerbung als ${beruf}</div>
+      <div class="letter-recipient">
+        <strong>${d.betrieb}</strong>${d.kontakt?'<br>'+d.kontakt:''}${d.betriebStrasse?'<br>'+d.betriebStrasse:''}${d.betriebPlzOrt?'<br>'+d.betriebPlzOrt:''}
+      </div>
+      <div class="letter-date">${d.ort}, ${today}</div>
+      <div class="letter-subject">${betreff}</div>
       <div class="letter-body">
-        <p>Sehr geehrte Damen und Herren</p>
+        <p>${anrede}</p>
         <p>${S} <span class="seg-tag tag-s">S</span></p>
         <p>${T} <span class="seg-tag tag-t">T</span></p>
         <p>${A} <span class="seg-tag tag-a">A</span></p>
@@ -1152,7 +1251,8 @@ function renderResult(){
         <p>${K} <span class="seg-tag tag-k">K</span></p>
       </div>
       <div class="letter-close">Freundliche Grüsse</div>
-      <div class="letter-sig"><div class="sig">${name}</div></div>
+      <div class="letter-sig"><div class="sig">${d.name}</div></div>
+      <div class="letter-beilagen">Beilagen: Lebenslauf, Zeugnisse</div>
     </div>
     <div class="result-actions">
       <button class="act act-print" onclick="window.print()">🖨 Drucken / PDF</button>
@@ -1188,7 +1288,7 @@ function renderResult(){
 // ═══════════════════════════════════════
 function attachEvents(){
   // Input listeners for intro
-  ["name","ort","beruf","betrieb"].forEach(k=>{
+  ["name","strasse","plz","ort","telefon","email","beruf","betrieb","betriebStrasse","betriebPlzOrt","betriebWeb","kontakt"].forEach(k=>{
     const el=document.getElementById(`inp-${k}`);
     if(el) el.addEventListener("input",e=>{
       state.data[k]=e.target.value;
@@ -1366,11 +1466,28 @@ function goBack(){
 }
 function goBackToStep(){state.screen="step";state.step=4;render();window.scrollTo(0,0);}
 
+function setBewerbungsart(art){
+  state.data.bewerbungsart = art;
+  render();
+}
+
 function copyText(){
-  const {name,beruf,betrieb,ort}=state.data;
+  const d=state.data;
   const {S,T,A,R,K}=state.answers;
   const today=new Date().toLocaleDateString("de-CH",{day:"numeric",month:"long",year:"numeric"});
-  const plain=`${name}\n${ort}\n\n${today}\n\nBewerbung als ${beruf}\n\nSehr geehrte Damen und Herren\n\n${S}\n\n${T}\n\n${A}\n\n${R}\n\n${K}\n\nFreundliche Grüsse\n${name}`;
+  const artMap = {
+    'Schnuppertage': `Bewerbung um Schnuppertage als ${d.beruf}`,
+    'Schnupperwoche': `Bewerbung um eine Schnupperwoche als ${d.beruf}`,
+    'Lehrstelle EFZ': `Bewerbung um eine Lehrstelle als ${d.beruf} EFZ`,
+    'Lehrstelle EBA': `Bewerbung um eine Lehrstelle als ${d.beruf} EBA`
+  };
+  const betreff = artMap[d.bewerbungsart] || `Bewerbung als ${d.beruf}`;
+  const anrede = d.kontakt ? 
+    (d.kontakt.match(/^Frau/i) ? `Sehr geehrte ${d.kontakt}` : 
+     d.kontakt.match(/^Herr/i) ? `Sehr geehrter ${d.kontakt}` : 
+     `Guten Tag ${d.kontakt}`) : 
+    'Sehr geehrte Damen und Herren';
+  const plain=`${d.name}\n${d.strasse}\n${d.plz} ${d.ort}\n${d.telefon?d.telefon+'\n':''}${d.email?d.email+'\n':''}\n${d.betrieb}\n${d.betriebStrasse?d.betriebStrasse+'\n':''}${d.betriebPlzOrt?d.betriebPlzOrt+'\n':''}\n${d.ort}, ${today}\n\n${betreff}\n\n${anrede}\n\n${S}\n\n${T}\n\n${A}\n\n${R}\n\n${K}\n\nFreundliche Grüsse\n\n\n${d.name}\n\nBeilagen: Lebenslauf, Zeugnisse`;
   navigator.clipboard.writeText(plain);
   const btn=document.getElementById("btn-copy");
   if(btn){btn.textContent="✓ Kopiert!";setTimeout(()=>{if(btn)btn.textContent="📋 Text kopieren";},2500);}
@@ -1641,6 +1758,7 @@ function buildSystemPrompt(stepKey, beruf, betrieb){
 Aktueller Schritt: ${stepNames[stepKey] || stepKey}
 Lehrberuf: ${beruf || 'unbekannt'}
 Betrieb: ${betrieb || 'unbekannt'}
+Bewerbungsart: ${state.data.bewerbungsart || 'Lehrstelle'}
 ${state.companyResearch ? '\nRecherche über den Betrieb:\n' + state.companyResearch.replace(/<br>/g,'\n') : ''}
 Deine Regeln:
 - Antworte IMMER auf Deutsch, kurz und einfach (max. 3 Sätze)
@@ -1788,7 +1906,7 @@ async function researchCompany(){
         max_tokens: 800,
         tools: [{ type: 'web_search_20250305', name: 'web_search' }],
         system: `Du recherchierst den Betrieb "${betrieb}" ${ort ? 'in ' + ort : ''} für einen Jugendlichen der sich als ${beruf} bewerben möchte.
-Suche die Website des Betriebs und fasse die wichtigsten Infos zusammen.
+${state.data.betriebWeb ? 'Die Website des Betriebs ist: ' + state.data.betriebWeb + '. Durchsuche diese Website gezielt.' : 'Suche die Website des Betriebs.'} Fasse die wichtigsten Infos zusammen.
 
 Antworte NUR mit diesen Punkten (kurz, in einfacher Sprache für 13-16 Jährige):
 - Was macht der Betrieb genau?
@@ -1798,7 +1916,7 @@ Antworte NUR mit diesen Punkten (kurz, in einfacher Sprache für 13-16 Jährige)
 - 2-3 konkrete Details die man im Bewerbungsbrief erwähnen könnte
 
 Formatiere als Fliesstext, keine Listen. Max 150 Wörter.`,
-        messages: [{role:'user', content: `Recherchiere den Betrieb "${betrieb}" ${ort ? 'in ' + ort : ''} für eine Bewerbung als ${beruf}.`}]
+        messages: [{role:'user', content: `Recherchiere den Betrieb "${betrieb}" ${ort ? 'in ' + ort : ''} für eine Bewerbung als ${beruf}.${state.data.betriebWeb ? ' Die Website des Betriebs ist: ' + state.data.betriebWeb : ''}`}]
       })
     });
     
