@@ -1718,9 +1718,10 @@ function showApiStatus(msg, ok){
   });
 }
 
-// ── Core API call with streaming ──
-async function callAI(systemPrompt, userMsg, onChunk, onDone, maxTok){
+// ── Core API call with rate-limit retry ──
+async function callAI(systemPrompt, userMsg, onChunk, onDone, maxTok, _retries){
   if(!apiKey){ onDone('(Kein API-Key — im Lehrperson-Modus eingeben)'); return; }
+  const retries = _retries || 0;
   aiState.thinking = true;
   updateAIStatus(true);
   let full = '';
@@ -1742,7 +1743,20 @@ async function callAI(systemPrompt, userMsg, onChunk, onDone, maxTok){
     });
     if(!res.ok){
       const err = await res.json().catch(()=>({}));
-      throw new Error(err?.error?.message || 'API-Fehler '+res.status);
+      const msg = err?.error?.message || '';
+      // Rate limit → auto-retry after wait
+      if((res.status === 429 || msg.includes('rate limit')) && retries < 2){
+        const wait = retries === 0 ? 15 : 30;
+        for(let i=wait; i>0; i--){
+          onChunk(`⏳ Kurze Pause — zu viele Anfragen. Nächster Versuch in ${i}s…`);
+          await new Promise(r=>setTimeout(r,1000));
+        }
+        onChunk('🔄 Versuche nochmal…');
+        aiState.thinking = false;
+        updateAIStatus(false);
+        return callAI(systemPrompt, userMsg, onChunk, onDone, maxTok, retries+1);
+      }
+      throw new Error(msg || 'API-Fehler '+res.status);
     }
     const data = await res.json();
     full = data.content?.map(b=>b.text||'').join('') || '';
@@ -1937,7 +1951,14 @@ Formatiere als Fliesstext, keine Listen. Max 150 Wörter.`,
     
     if(!res.ok){
       const err = await res.json().catch(()=>({}));
-      throw new Error(err?.error?.message || 'API-Fehler ' + res.status);
+      const msg = err?.error?.message || '';
+      if(res.status === 429 || msg.includes('rate limit')){
+        if(feedbackEl) feedbackEl.innerHTML = '⏳ Zu viele Anfragen — bitte 30 Sekunden warten und nochmal klicken.';
+        aiState.thinking = false; updateAIStatus(false);
+        if(btn){ btn.disabled = false; btn.innerHTML = '🔍 Nochmal versuchen: ' + escHtml(betrieb); }
+        return;
+      }
+      throw new Error(msg || 'API-Fehler ' + res.status);
     }
     
     const data = await res.json();
@@ -2004,14 +2025,32 @@ function runFinalAnalysis(){
   if(!body || !apiKey) { body.innerHTML='<span style="color:var(--muted);">⚙ Kein API-Key — im Lehrperson-Modus eingeben.</span>'; return; }
   if(btn) btn.disabled = true;
   
-  const {name,beruf,betrieb,ort} = state.data;
+  const d = state.data;
   const {S,T,A,R,K} = state.answers;
+  const today = new Date().toLocaleDateString("de-CH",{day:"numeric",month:"long",year:"numeric"});
+  const aus = d.ausbildung || 'EFZ';
+  const artMap = {
+    'Schnuppertage': `Bewerbung für Schnuppertage als ${d.beruf} ${aus}`,
+    'Schnupperwoche': `Bewerbung für eine Schnupperwoche als ${d.beruf} ${aus}`,
+    'Schnupperlehre': `Bewerbung für eine Schnupperlehre als ${d.beruf} ${aus}`,
+    'Lehrstelle': `Bewerbung für eine Lehrstelle als ${d.beruf} ${aus}`
+  };
+  const betreff = artMap[d.bewerbungsart] || `Bewerbung als ${d.beruf} ${aus}`;
+  let anrede = 'Sehr geehrte Damen und Herren';
+  if(d.kontakt){
+    if(d.kontakt.match(/^Frau/i)) anrede = `Liebe ${d.kontakt}`;
+    else if(d.kontakt.match(/^Herr/i)) anrede = `Sehr geehrter ${d.kontakt}`;
+    else anrede = `Guten Tag ${d.kontakt}`;
+  }
+
   const fullLetter = `Story: ${S}\n\nTalente: ${T}\n\nAntrieb: ${A}\n\nResonanz: ${R}\n\nKlartext: ${K}`;
 
   body.innerHTML = '<div style="text-align:center;padding:16px;"><span class="ai-cursor"></span> Analysiere den ganzen Brief…</div>';
 
   const sys = `Du bist ein erfahrener Bewerbungs-Coach für Jugendliche (13-16, Kleinklasse, ADHS/ASS möglich).
-Lehrberuf: ${beruf}, Betrieb: ${betrieb}, Ort: ${ort}, Name: ${name}
+Lehrberuf: ${d.beruf}, Betrieb: ${d.betrieb}, Ort: ${d.ort}, Name: ${d.name}
+Bewerbungsart: ${d.bewerbungsart} ${aus}
+${state.companyResearch ? 'Recherche über den Betrieb:\n' + state.companyResearch.replace(/<br>/g,'\n') : ''}
 
 Du analysierst jetzt den KOMPLETTEN Motivationsbrief nach dem STARK-Modell.
 
@@ -2024,9 +2063,12 @@ Deine Aufgabe:
    - Rechtschreibung/Grammatik
 
 2. VERBESSERTE VERSION:
-   Schreibe den kompletten Brief neu — verbessert aber im Stil des Schülers.
-   Markiere den verbesserten Brief klar mit "---BRIEF---" am Anfang und "---ENDE---" am Ende.
-   Der Brief soll:
+   Schreibe NUR den Fliesstext des Briefs neu (die 5 Absätze: Story, Talente, Antrieb, Resonanz, Klartext).
+   Markiere klar mit "---BRIEF---" am Anfang und "---ENDE---" am Ende.
+   Schreibe NUR die 5 Absätze als reinen Fliesstext, OHNE Anrede, OHNE Grussformel, OHNE Absender/Empfänger.
+   KEINE Sternchen (**), KEINE Markdown-Zeichen, KEINE Aufzählungszeichen, KEINE Symbole.
+   Nur sauberer, normaler Text. Absätze mit Leerzeilen trennen.
+   Der Text soll:
    - Alle Floskeln durch authentische Formulierungen ersetzen
    - Konjunktive durch direkte Aussagen ersetzen
    - Konkrete Beispiele einbauen/stärken
@@ -2045,27 +2087,69 @@ Antworte auf Deutsch, ermutigend, klar strukturiert.`;
       body.innerHTML = formatFinalResponse(final, false);
       if(btn) btn.disabled = false;
     },
-    1200
+    1500
   );
 }
 
 function formatFinalResponse(text, streaming){
-  // Split analysis from improved letter
   const briefStart = text.indexOf('---BRIEF---');
   const briefEnd = text.indexOf('---ENDE---');
   
   let analysis = text;
-  let improved = '';
+  let improvedBody = '';
   
   if(briefStart > -1){
     analysis = text.substring(0, briefStart).trim();
-    improved = text.substring(briefStart + 11, briefEnd > -1 ? briefEnd : undefined).trim();
+    improvedBody = text.substring(briefStart + 11, briefEnd > -1 ? briefEnd : undefined).trim();
+    // Clean markdown artifacts
+    improvedBody = improvedBody.replace(/\*\*/g,'').replace(/\*/g,'').replace(/^#+\s*/gm,'').replace(/^[-•]\s*/gm,'');
   }
   
-  let html = `<div style="margin-bottom:14px;">${analysis.replace(/\n/g,'<br>')}</div>`;
+  // Clean analysis too
+  analysis = analysis.replace(/\*\*/g,'').replace(/\*/g,'');
   
-  if(improved){
-    html += `<div class="final-improved">${improved.replace(/\n/g,'<br>')}</div>`;
+  let html = `<div style="margin-bottom:14px;line-height:1.7;">${analysis.replace(/\n/g,'<br>')}</div>`;
+  
+  if(improvedBody){
+    const d = state.data;
+    const today = new Date().toLocaleDateString("de-CH",{day:"numeric",month:"long",year:"numeric"});
+    const aus = d.ausbildung || 'EFZ';
+    const artMap = {
+      'Schnuppertage': `Bewerbung für Schnuppertage als ${d.beruf} ${aus}`,
+      'Schnupperwoche': `Bewerbung für eine Schnupperwoche als ${d.beruf} ${aus}`,
+      'Schnupperlehre': `Bewerbung für eine Schnupperlehre als ${d.beruf} ${aus}`,
+      'Lehrstelle': `Bewerbung für eine Lehrstelle als ${d.beruf} ${aus}`
+    };
+    const betreff = artMap[d.bewerbungsart] || `Bewerbung als ${d.beruf} ${aus}`;
+    let anrede = 'Sehr geehrte Damen und Herren';
+    if(d.kontakt){
+      if(d.kontakt.match(/^Frau/i)) anrede = `Liebe ${d.kontakt}`;
+      else if(d.kontakt.match(/^Herr/i)) anrede = `Sehr geehrter ${d.kontakt}`;
+      else anrede = `Guten Tag ${d.kontakt}`;
+    }
+
+    // Format body paragraphs
+    const bodyParas = improvedBody.split(/\n\s*\n/).filter(p=>p.trim()).map(p=>`<p>${p.trim().replace(/\n/g,' ')}</p>`).join('');
+
+    html += `
+    <div class="letter-wrap" style="margin-top:16px;">
+      <div class="letter-sender">
+        <strong>${d.name}</strong><br>
+        ${d.strasse?d.strasse+'<br>':''}${d.plz?d.plz+' ':''}${d.ort}${d.email?'<br>'+d.email:''}${d.telefon?'<br>'+d.telefon:''}
+      </div>
+      <div class="letter-recipient">
+        <strong>${d.betrieb}</strong>${d.kontakt?'<br>'+d.kontakt:''}${d.betriebStrasse?'<br>'+d.betriebStrasse:''}${d.betriebPlzOrt?'<br>'+d.betriebPlzOrt:''}
+      </div>
+      <div class="letter-date">${d.ort}, ${today}</div>
+      <div class="letter-subject">${betreff}</div>
+      <div class="letter-body">
+        <p>${anrede}</p>
+        ${bodyParas}
+      </div>
+      <div class="letter-close">Mit freundlichen Grüssen</div>
+      <div class="letter-sig"><div class="sig">${d.name}</div></div>
+      <div class="letter-beilagen">Beilagen: Lebenslauf, Zeugnisse</div>
+    </div>`;
     if(!streaming){
       html += `<button class="final-copy" onclick="copyImproved()">📋 Verbesserte Version kopieren</button>`;
     }
@@ -2077,10 +2161,30 @@ function formatFinalResponse(text, streaming){
 
 let lastImprovedText = '';
 function copyImproved(){
-  const el = document.querySelector('.final-improved');
-  if(!el) return;
-  lastImprovedText = el.innerText;
-  navigator.clipboard.writeText(lastImprovedText).then(()=>{
+  const d = state.data;
+  const today = new Date().toLocaleDateString("de-CH",{day:"numeric",month:"long",year:"numeric"});
+  const aus = d.ausbildung || 'EFZ';
+  const artMap = {
+    'Schnuppertage': `Bewerbung für Schnuppertage als ${d.beruf} ${aus}`,
+    'Schnupperwoche': `Bewerbung für eine Schnupperwoche als ${d.beruf} ${aus}`,
+    'Schnupperlehre': `Bewerbung für eine Schnupperlehre als ${d.beruf} ${aus}`,
+    'Lehrstelle': `Bewerbung für eine Lehrstelle als ${d.beruf} ${aus}`
+  };
+  const betreff = artMap[d.bewerbungsart] || `Bewerbung als ${d.beruf} ${aus}`;
+  let anrede = 'Sehr geehrte Damen und Herren';
+  if(d.kontakt){
+    if(d.kontakt.match(/^Frau/i)) anrede = `Liebe ${d.kontakt}`;
+    else if(d.kontakt.match(/^Herr/i)) anrede = `Sehr geehrter ${d.kontakt}`;
+    else anrede = `Guten Tag ${d.kontakt}`;
+  }
+  
+  // Get improved body text from the rendered letter
+  const letterBody = document.querySelector('.final-wrap .letter-body');
+  const bodyText = letterBody ? Array.from(letterBody.querySelectorAll('p')).slice(1).map(p=>p.innerText).join('\n\n') : '';
+  
+  const full = `${d.name}\n${d.strasse}\n${d.plz} ${d.ort}\n${d.email?d.email+'\n':''}${d.telefon?d.telefon+'\n':''}\n${d.betrieb}\n${d.kontakt?d.kontakt+'\n':''}${d.betriebStrasse?d.betriebStrasse+'\n':''}${d.betriebPlzOrt?d.betriebPlzOrt+'\n':''}\n${d.ort}, ${today}\n\n${betreff}\n\n${anrede}\n\n${bodyText}\n\nMit freundlichen Grüssen\n\n\n${d.name}\n\nBeilagen: Lebenslauf, Zeugnisse`;
+  
+  navigator.clipboard.writeText(full).then(()=>{
     const btn = document.querySelector('.final-copy');
     if(btn){ btn.textContent = '✓ Kopiert!'; setTimeout(()=>{ btn.textContent = '📋 Verbesserte Version kopieren'; }, 2000); }
   });
